@@ -111,7 +111,6 @@ function handleInput()
 	//2 - for toon shading
 	if(currentKeysDown[50])
 	{
-		disableMusic(true);
 	}
 
 	//3 - for normal shading
