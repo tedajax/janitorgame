@@ -1,10 +1,10 @@
 /* ***********************************
 *									 *
-*			Assets Factory			 *
+*			Assets Manager			 *
 *									 *
 *********************************** */
 
-function AssetFactory() {
+function AssetManager() {
 	this.textures = new Array();
 	this.objects = new Array();
 	this.images = new Array();
@@ -14,7 +14,7 @@ function AssetFactory() {
 /* ***********************************
 *			Load Image				 *
 *********************************** */
-AssetFactory.prototype.getImage = function(url) {
+AssetManager.prototype.getImage = function(url) {
 	//Check to see if image is already loaded
 	for(var i = 0; i < this.images.length; i++) {
 		if(url = this.images[i].src) {
@@ -36,7 +36,7 @@ AssetFactory.prototype.getImage = function(url) {
 /* ***********************************
 *			Load Texture			 *
 *********************************** */
-AssetFactory.prototype.getTexture = function(url) {
+AssetManager.prototype.getTexture = function(url) {
 	//Check to see is texture is already loaded
 	for(var i = 0; i < this.textures.length; i++) {
 		if(url = this.textures[i].url) {
@@ -70,7 +70,7 @@ bindTexture = function(texture) {
 /* ***********************************
 *			Load Object				 *
 *********************************** */
-AssetFactory.prototype.getModel = function(url) {
+AssetManager.prototype.getModel = function(url) {
 	for(var i = 0; i < this.objects.length; i++) {
 		if(url == this.objects[i].url) {
 			return this.objects[i];
