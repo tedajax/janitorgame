@@ -67,7 +67,7 @@ function lightingAndNormals()
 
 	gl.uniform3f(shaderProgram.directionalColorUniform, 0.6, 0.6, 0.6);
 	gl.uniform3f(shaderProgram.specularColorUniform, 0.4, 0.4, 0.4);
-	gl.uniform3f(shaderProgram.cameraPositionUniform, eyeX, eyeY, eyeZ);
+	gl.uniform3f(shaderProgram.cameraPositionUniform, engine.eyeX, engine.eyeY, engine.eyeZ);
 	
 	//gl.uniform3f(shaderProgram.lightingEnabledUniform, true);
 };
@@ -92,7 +92,7 @@ function drawScene()
 	enemy1.draw();
 	enemy2.draw();
 	enemy3.draw();
-	
+		
 	drawShrubs();	
 	
 	drawHUD();
@@ -156,7 +156,7 @@ function drawTeapot()
 		var storeMV = mvMatrix;
 		
 		mvTranslate([0, 20, 0]);
-		mvRotate(yaw, [0, 1, 0]);
+		mvRotate(engine.yaw, [0, 1, 0]);
 		mvScale([tempscale, tempscale, tempscale]);
 		
 		gl.uniform1i(shaderProgram.heightTexturingUniform, false);
