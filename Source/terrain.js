@@ -8,7 +8,7 @@ function Terrain()
 	this.tileCountX = 16;
 	this.tileCountZ = 16;
 	
-	this.urls = ["sand.png","grass.png","rock.png","snow.png"];
+	this.urls = ["./Assets/Textures/sand.png","./Assets/Textures/grass.png","./Assets/Textures/rock.png","./Assets/Textures/snow.png"];
 	this.textures = new Array();
 
 	this.scaleX = 2.0;
@@ -30,7 +30,7 @@ function Terrain()
 		heightImage.p.terrainGenerate(heightImage);
 	};
 	
-	heightImage.src = "mediumtest.png";
+	heightImage.src = "./Assets/Textures/mediumtest.png";
 	this.loadTextures(this.urls);
 	this.vertices;
 };
