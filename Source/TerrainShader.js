@@ -22,9 +22,9 @@ function TerrainShader()
 	
 	this.maxHeight = 64.0;
 	
-	this.minFogDist = 20.0;
-	this.maxFogDist = 50.0;
-	this.fogColor = Vector.create([0.8, 0.8, 0.8]);
+	this.minFogDist = 40.0;
+	this.maxFogDist = 150.0;
+	this.fogColor = Vector.create([0.8, 0.0, 0.0]);
 	this.fogEnabled = true;
 	
 	this.initLocales();
