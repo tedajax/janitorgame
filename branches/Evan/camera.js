@@ -5,11 +5,14 @@ var moveX = 0, moveY = 0, moveZ = 0;
 var yawDelta = 0;
 
 var pressedKeys = Object();
+
+//Key pressed.
 function handleKeyDown(event)
 {
 	pressedKeys[event.keyCode] = true;	
 };
 
+//Key unpressed.
 function handleKeyUp(event)
 {
 	pressedKeys[event.keyCode] = false;
@@ -19,49 +22,82 @@ function handleKeyUp(event)
 
 function handleKeys()
 {
-	if (pressedKeys[39])
+	//Right arrow
+	if(pressedKeys[39])
+	{
 		yawDelta = 4.0;
-	if (pressedKeys[37])
+	}
+	
+	//Left arrow
+	if(pressedKeys[37])
+	{
 		yawDelta = -4.0;
+	}
 	
-	if (pressedKeys[65])
+	//A
+	if(pressedKeys[65])
+	{
 		moveX = -1.0;
-	if (pressedKeys[68])
+	}
+	
+	//D
+	if(pressedKeys[68])
+	{
 		moveX = 1.0;
-	if (pressedKeys[83])
+	}
+	
+	//S
+	if(pressedKeys[83])
+	{
 		moveZ = -1.0;
-	if (pressedKeys[87])
+	}
+	
+	//W
+	if(pressedKeys[87])
+	{
 		moveZ = 1.0;
+	}
 	
-	if (pressedKeys[88])
+	//X
+	if(pressedKeys[88])
+	{
 		engine.healthVal -= 1.0;
+	}
 	
+	//Spacebar -- Fire bullet
 	if (pressedKeys[32] && !bulletFired)
 	{
 		engine.fireBullet();
 		bulletFired = true;
 	}
 	
+	//E
 	if (pressedKeys[69])
+	{
 		tempscale += 0.1;
-	if (pressedKeys[81])
-		tempscale -= 0.1;
+	}
 	
-	//if (pressedKeys[38])
-	//	moveY = 2.0;
-	//if (pressedKeys[40])
-	//	moveY = -2.0;
+	//q
+	if(pressedKeys[81])
+	{
+		tempscale -= 0.1;
+	}
+	
+	if (pressedKeys[38])
+		moveY = 2.0;
+	if (pressedKeys[40])
+		moveY = -2.0;
 };
 
 function moveCamera()
 {
-	var PIOVER180 = Math.PI / 180;
+	//Update x position.
+	eyeX += Math.cos(yaw * Math.toRadians(1)) * moveX;
+	eyeZ += Math.sin(yaw * Math.toRadians(1)) * moveX;
 	
-	eyeX += Math.cos(yaw * PIOVER180) * moveX;
-	eyeZ += Math.sin(yaw * PIOVER180) * moveX;
-	
-	eyeX += Math.cos((yaw - 90) * PIOVER180) * moveZ;
-	eyeZ += Math.sin((yaw - 90) * PIOVER180) * moveZ;
+	//Update z position
+	eyeX += Math.cos((yaw - 90) * Math.toRadians(1)) * moveZ;
+	eyeZ += Math.sin((yaw - 90) * Math.toRadians(1)) * moveZ;
 	
 	//eyeY += moveY;
 	eyeY = getTerrainHeight(eyeX, eyeZ) + 10.0;
@@ -81,6 +117,18 @@ function camTransforms()
 	mvTranslate([0.0, 0.0, 0.0]);
 	mvRotate(pitch, [1, 0, 0]);
 	mvRotate(yaw, [0, 1, 0]);
-	
 	mvTranslate([-eyeX, -eyeY, -eyeZ]);
 };
+
+
+//Convert from degrees to radians
+Math.toRadians = function(degrees)
+{
+	return Math.PI * degrees / 180;
+}
+
+//Convert from radians to degrees
+Math.toDegrees = function(radians)
+{
+	return 180 * radians / Math.PI;
+}
