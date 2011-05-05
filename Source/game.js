@@ -102,6 +102,10 @@ function drawTerrain()
 {
 	if (terrain.loaded && textures.loaded)
 	{		
+		gl.useProgram(terrShader.program);
+	
+		terrShader.cameraPosition = Vector.create([eyeX, eyeY, eyeZ]);
+	
 		//set textures
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, textures.sand);
@@ -115,11 +119,11 @@ function drawTerrain()
 		gl.activeTexture(gl.TEXTURE3);
 		gl.bindTexture(gl.TEXTURE_2D, textures.snow);
 		
-		terrShader.program.pMatrix = pMatrix;
-		terrShader.program.mvMatrix = mvMatrix;
+		terrShader.pMatrix = pMatrix;
+		terrShader.mvMatrix = mvMatrix;
 		nMatrix = mvMatrix.inverse();
 		nMatrix = nMatrix.transpose();
-		terrShader.program.nMatrix = nMatrix;
+		terrShader.nMatrix = nMatrix;
 		
 		terrShader.maxHeight = terrain.maxHeight;
 		
