@@ -1,20 +1,38 @@
 function Engine()
 {
 	this.hud;
-	this.healthVal;
 };
 
 Engine.prototype.init = function()
 {
 	this.hud = new HUD();
-	this.healthVal = 100.0;
 };
 
-Engine.prototype.fireBullet = function()
+Engine.prototype.getFileString = function(url)
 {
-	//var Bullet b = new Bullet();
-	//b.initialize();
-	//Bullets.push(b);
+	var request;
+	if (window.XMLHttpRequest)
+	{
+		request = new XMLHttpRequest();
+	}
+	else
+	{
+		request = ActiveXObject("Microsoft.XMLHTTP");
+	}
 	
-	Bullets.push(new Bullet());
+	request.open("GET", url, false);
+	request.send();
+	return request.responseText;
 };
+
+Engine.prototype.createInheritance = function(descendant, parent)
+{
+    var sConstructor = parent.toString();
+    var aMatch = sConstructor.match( /\s*function (.*)\(/ );
+    if ( aMatch != null ) { descendant.prototype[aMatch[1]] = parent; }
+    for (var m in parent.prototype) {
+        descendant.prototype[m] = parent.prototype[m];
+    }
+};
+
+var engine = new Engine();

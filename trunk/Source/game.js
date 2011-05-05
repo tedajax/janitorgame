@@ -2,8 +2,9 @@ var testTerrain;
 var teapot;
 var vData;
 
+var terrShader;
+
 var Bullets = new Array();
-var engine = new Engine();
 
 var enemy1 = new Enemy();
 var enemy2 = new Enemy();
@@ -17,7 +18,7 @@ var bulletFired = false;
 //Textures class which stores all the textures
 function textures()
 {
-	textures.teapot;
+	textures.teapot;	
 	
 	textures.grass;
 	textures.rock;
@@ -50,7 +51,7 @@ function checkLoadedTextures()
 
 function lightingAndNormals()
 {
-	var nMatrix = mvMatrix.inverse();
+	nMatrix = mvMatrix.inverse();
 	nMatrix = nMatrix.transpose();
 	gl.uniformMatrix4fv(shaderProgram.nMatrixUniform, false, new Float32Array(nMatrix.flatten()));
 	
@@ -84,6 +85,7 @@ function drawScene()
 	gl.useProgram(shaderProgram);
 	drawSkybox();
 	drawTerrain();
+	gl.useProgram(shaderProgram);
 	drawBullets();
 	drawTeapot();
 	
@@ -103,38 +105,39 @@ function drawTerrain()
 		//set textures
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, textures.sand);
-		gl.uniform1i(shaderProgram.samplerUniform0, 0);
-		
+				
 		gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, textures.grass);
-		gl.uniform1i(shaderProgram.samplerUniform1, 1);
-		
+			
 		gl.activeTexture(gl.TEXTURE2);
 		gl.bindTexture(gl.TEXTURE_2D, textures.rock);
-		gl.uniform1i(shaderProgram.samplerUniform2, 2);
-		
+				
 		gl.activeTexture(gl.TEXTURE3);
 		gl.bindTexture(gl.TEXTURE_2D, textures.snow);
-		gl.uniform1i(shaderProgram.samplerUniform3, 3);
 		
-		gl.uniform1i(shaderProgram.heightTexturingUniform, true);
-		gl.uniform1i(shaderProgram.enableLightingUniform, true);
-		gl.uniform1f(shaderProgram.maxTerrainHeight, terrain.maxHeight);
+		terrShader.program.pMatrix = pMatrix;
+		terrShader.program.mvMatrix = mvMatrix;
+		nMatrix = mvMatrix.inverse();
+		nMatrix = nMatrix.transpose();
+		terrShader.program.nMatrix = nMatrix;
+		
+		terrShader.maxHeight = terrain.maxHeight;
+		
+		terrShader.drawSetup();
 		
 		//bind vertices
 		gl.bindBuffer(gl.ARRAY_BUFFER, terrain.vertexBuffer);
-		gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, terrain.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		gl.vertexAttribPointer(terrShader.program.vertexPositionAttribute, terrain.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
 		
 		//bind normals
 		gl.bindBuffer(gl.ARRAY_BUFFER, terrain.normalBuffer);
-		gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, terrain.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		gl.vertexAttribPointer(terrShader.program.vertexNormalAttribute, terrain.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
 		
 		//bind texture coordinates
 		gl.bindBuffer(gl.ARRAY_BUFFER, terrain.texCoordBuffer);
-		gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, terrain.texCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-		
-		setMatrixUniforms();
-		lightingAndNormals();
+		gl.vertexAttribPointer(terrShader.program.textureCoordAttribute, terrain.texCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+		//lightingAndNormals();
 		
 		//bind indices and draw with them
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, terrain.indexBuffer);
@@ -322,6 +325,8 @@ function gameStart()
 	
 	document.onkeydown = handleKeyDown;
 	document.onkeyup = handleKeyUp;
+	
+	terrShader = new TerrainShader();
 		
 	engine.init();
 	enemy1.initialize();

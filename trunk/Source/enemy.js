@@ -1,4 +1,4 @@
-createInheritance(Enemy, GameObject);
+engine.createInheritance(Enemy, GameObject);
 
 function Enemy()
 {

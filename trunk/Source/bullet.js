@@ -1,4 +1,4 @@
-createInheritance(Bullet, GameObject);
+engine.createInheritance(Bullet, GameObject);
 
 function Bullet()
 {
