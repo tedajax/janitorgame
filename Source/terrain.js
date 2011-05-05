@@ -12,7 +12,7 @@ function terrain()
 {
 	var heightImage = new Image();
 	
-	terrain.maxHeight = 64;
+	terrain.maxHeight = 64.0;
 	
 	terrain.tileCountX = 16;
 	terrain.tileCountZ = 16;

@@ -150,6 +150,7 @@ function mvScale(v)
 	multMatrix(m);
 };
  
+var nMatrix;
 var pMatrix;
 function perspective(fovy, aspect, znear, zfar) 
 {
