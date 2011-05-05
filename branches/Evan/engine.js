@@ -1,6 +1,7 @@
 function Engine()
 {
 	this.hud;
+	this.cam = new camera();
 };
 
 Engine.prototype.init = function()

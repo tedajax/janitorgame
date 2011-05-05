@@ -90,7 +90,7 @@ HUD.prototype.draw = function()
 		this.drawImage(this.reticle.image, (this.width / 2) - (this.reticle.image.width / 2), (this.height / 2) - (this.reticle.image.height / 2), 0);
 		
 		this.drawImage(this.compass.image, (this.width - 84), 20, 0);
-		this.drawImage(this.direction.image, (this.width - 84), 20, yaw);
+		this.drawImage(this.direction.image, (this.width - 84), 20, engine.yaw);
 	}
 	else
 	{
