@@ -24,7 +24,7 @@ camera.prototype.initialize = function()
 }
 
 //Setters
-camera.prototype.setEyeX = function(num)
+/*camera.prototype.setEyeX = function(num)
 {
 	engine.eyeX = num;
 }
@@ -77,7 +77,7 @@ camera.prototype.setMoveZ = function(num)
 camera.prototype.setYawDelta = function(num)
 {
 	engine.yawDelta = num;
-}
+}*/
 
 var pressedKeys = Object();
 
@@ -104,46 +104,36 @@ function handleKeys()
 	//Right arrow
 	if(pressedKeys[39])
 	{
-		//engine.setYawDelta(4.0);
 		engine.yawDelta = 4.0;
 	}
 	
 	//Left arrow
 	if(pressedKeys[37])
 	{
-		//camera.yawDelta = -4.0;
-		//engine.setYawDelta(-4.0);
 		engine.yawDelta = -4.0;
 	}
 	
 	//A
 	if(pressedKeys[65])
 	{
-		//camera.moveX = -1.0;
-		//engine.setMoveX(-1.0);
 		engine.moveX = -1.0;
 	}
 	
 	//D
 	if(pressedKeys[68])
 	{
-		//camera.moveX = 1.0;
-		//engine.setMoveX(1.0);
 		engine.moveX = 1.0;
 	}
 	
 	//S
 	if(pressedKeys[83])
 	{
-		//camera.moveZ = -1.0;
-		//engine.setMoveZ(-1.0);
 		engine.moveZ = -1.0;
 	}
 	
 	//W
 	if(pressedKeys[87])
 	{
-		//camera.moveZ = 1.0;
 		engine.moveZ = 1.0;
 	}
 	
