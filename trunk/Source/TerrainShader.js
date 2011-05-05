@@ -21,6 +21,13 @@ function TerrainShader()
 	this.texture4 = 3;
 	
 	this.maxHeight = 64.0;
+	
+	this.minFogDist = 20.0;
+	this.maxFogDist = 50.0;
+	this.fogColor = Vector.create([0.8, 0.8, 0.8]);
+	this.fogEnabled = true;
+	
+	this.initLocales();
 };
 
 TerrainShader.prototype.fragFileString = function()
@@ -41,8 +48,8 @@ TerrainShader.prototype.initLocales = function()
 	this.program.vertexNormalAttribute = gl.getAttribLocation(this.program, "aVertexNormal");
 	gl.enableVertexAttribArray(this.program.vertexNormalAttribute);
 	
-	gl.enableVertexAttribArray(this.program.textureCoordAttribute);
 	this.program.textureCoordAttribute = gl.getAttribLocation(this.program, "aTextureCoord");
+	gl.enableVertexAttribArray(this.program.textureCoordAttribute);
 	
 	this.program.pMatrixUniform = gl.getUniformLocation(this.program, "uPMatrix");
 	this.program.mvMatrixUniform = gl.getUniformLocation(this.program, "uMVMatrix");
@@ -60,13 +67,15 @@ TerrainShader.prototype.initLocales = function()
 	this.program.samplerUniform3 = gl.getUniformLocation(this.program, "uTexSampler3");
 	
 	this.program.maxTerrainHeight = gl.getUniformLocation(this.program, "uMaxHeight");
-	this.program.enableLightingUniform = gl.getUniformLocation(this.program, "uEnableLighting");
+	
+	this.program.minFogDist = gl.getUniformLocation(this.program, "uFogMinDist");
+	this.program.maxFogDist = gl.getUniformLocation(this.program, "uFogMaxDist");
+	this.program.fogColor = gl.getUniformLocation(this.program, "uFogColor");
+	this.program.fogEnabled = gl.getUniformLocation(this.program, "uFogEnabled");
 };
 
 TerrainShader.prototype.drawSetup = function()
 {
-	gl.useProgram(this.program);
-
 	gl.uniformMatrix4fv(this.program.pMatrixUniform, false, new Float32Array(this.pMatrix.flatten()));
 	gl.uniformMatrix4fv(this.program.mvMatrixUniform, false, new Float32Array(this.mvMatrix.flatten()));
 	gl.uniformMatrix4fv(this.program.nMatrixUniform, false, new Float32Array(this.nMatrix.flatten()));
@@ -96,7 +105,10 @@ TerrainShader.prototype.drawSetup = function()
 	gl.uniform1i(this.program.samplerUniform2, 2);
 	gl.uniform1i(this.program.samplerUniform3, 3);
 	
-	gl.uniform1i(this.program.maxTerrainheight, this.maxHeight);
+	gl.uniform1f(this.program.maxTerrainHeight, this.maxHeight);
 	
-	
+	gl.uniform1f(this.program.minFogDist, this.minFogDist);
+	gl.uniform1f(this.program.maxFogDist, this.maxFogDist);
+	gl.uniform3f(this.program.fogColor, this.fogColor.e(1), this.fogColor.e(2), this.fogColor.e(3));
+	gl.uniform1i(this.program.fogEnabled, this.fogEnabled);
 };

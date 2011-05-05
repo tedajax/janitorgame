@@ -12,6 +12,8 @@ uniform float uMaxHeight;
 varying vec3 vLightWeighting;
 varying vec2 vTextureCoord;
 varying vec3 vVertexPosition;
+varying vec4 vFogColor;
+varying float vFogWeight;
 
 void main(void) 
 {
@@ -37,6 +39,10 @@ void main(void)
 		texCol = mix(texCol2, texCol3, (vy - 0.666) / 0.166);
 	else
 		texCol = texCol3;
+		
+	//vFogColor.a = vFogWeight;
+		
+	texCol = mix(texCol, vFogColor, vFogWeight);
 
 	gl_FragColor = vec4(vLightWeighting * texCol.rgb, texCol.a);
 }

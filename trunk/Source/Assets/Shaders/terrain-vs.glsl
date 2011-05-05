@@ -13,9 +13,16 @@ uniform vec3 uDirectionalColor;
 uniform vec3 uSpecularColor;
 uniform vec3 uCameraPos;
   
+uniform float uFogMaxDist;
+uniform float uFogMinDist;
+uniform vec3 uFogColor;
+uniform bool uFogEnabled;
+  
 varying vec3 vLightWeighting;
 varying vec2 vTextureCoord;
 varying vec3 vVertexPosition;
+varying vec4 vFogColor;
+varying float vFogWeight;
 
 void main(void)
 {
@@ -31,6 +38,28 @@ void main(void)
 	h = normalize(h);
 	float specularLightWeighting = max(pow(dot(transformedNormal.xyz, h), 8.0), 0.0);
 
+	float d = distance(aVertexPosition, uCameraPos);
+	
+	if (uFogEnabled)
+	{
+		if (d < uFogMinDist)
+		{
+			vFogWeight = 0.0;
+		}
+		else if (d < uFogMaxDist)
+		{
+			vFogWeight = (d - uFogMinDist) / (uFogMaxDist - uFogMinDist);
+		}
+		else
+		{
+			vFogWeight = 1.0;
+		}
+	}
+	else
+		vFogWeight = 0.0;
+		
+	vFogColor = vec4(uFogColor, 1.0);
+	
 	vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting + uSpecularColor * specularLightWeighting;
 
 	vTextureCoord = aTextureCoord;
