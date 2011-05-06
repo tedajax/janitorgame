@@ -11,7 +11,7 @@ function Player() {
 	this.side = 0;
 	this.yrot = 0;
 	this.prot = 0;
-	this.useController = true;
+	this.useController = false;
 	this.Init();
 };
 
