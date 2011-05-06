@@ -3,6 +3,7 @@ var tempscale = 0.1;
 var aManager;
 
 
+
 function lightingAndNormals()
 {
 	nMatrix = mvMatrix.inverse();
@@ -60,6 +61,7 @@ function gameStart()
 	document.onkeydown = handleKeyDown;
 	document.onkeyup = handleKeyUp;
 	testTerrain = new Terrain();
+	
 	engine.init();
 	
 	setInterval(tick, 16);
