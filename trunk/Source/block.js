@@ -48,7 +48,7 @@ Block.prototype.updateShader = function()
 	this.shader.pMatrix = pMatrix;
 	this.shader.mvMatrix = mvMatrix;
 	
-	this.shader.cameraPosition = Vector.create([eyeX, eyeY, eyeZ]);
+	this.shader.cameraPosition = Vector.create([camera.X, camera.Y, camera.Z]);
 	
 	this.shader.drawSetup();
 };
