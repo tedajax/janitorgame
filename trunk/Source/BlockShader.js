@@ -57,7 +57,7 @@ BlockShader.prototype.drawSetup = function()
 	
 	gl.uniform3f(this.program.cameraPositionUniform, this.cameraPosition.e(1), this.cameraPosition.e(2), this.cameraPosition.e(3));
 	
-	gl.uniform1i(this.program.samplerUniform0, 0);
+	gl.uniform1i(this.program.samplerUniform0, this.texture1);
 	
 	gl.uniform1f(this.program.minFogDist, this.minFogDist);
 	gl.uniform1f(this.program.maxFogDist, this.maxFogDist);

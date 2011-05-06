@@ -12,6 +12,9 @@ function Player() {
 	this.yrot = 0;
 	this.prot = 0;
 	this.useController = false;
+	this.moveSpeed = 2;
+	this.rotSpeed = 4;
+	
 	this.Init();
 };
 
@@ -21,6 +24,7 @@ Player.prototype.Init = function() {
 };
 
 Player.prototype.Update = function(dTime) {
+	//console.log("Player Update");
 	this.CheckInput();
 	this.MovePlayer(dTime);
 	this.Reset();
@@ -62,28 +66,28 @@ Player.prototype.CheckInput = function() {
 		}
 	} else {
 		if(controller.KeyPressed(87)) { //W
-			this.forward = 1;
+			this.forward = this.moveSpeed;
 		} else if(controller.KeyPressed(83)) { //S
-			this.forward = -1;
+			this.forward = -this.moveSpeed;
 		}
 
 		if(controller.KeyPressed(68)) { //D
-			this.side = 1;
+			this.side = this.moveSpeed;
 		} else if(controller.KeyPressed(65)) { //A
-			this.side = -1;
+			this.side = -this.moveSpeed;
 		}
 
 
 		if(controller.KeyPressed(39)) { //Right
-			this.yrot = 1;
+			this.yrot = this.rotSpeed;
 		} else if(controller.KeyPressed(37)) { //Left
-			this.yrot = -1;
+			this.yrot = -this.rotSpeed;
 		}
 
 		if(controller.KeyPressed(38)) { //Up
-			this.prot = -1;
+			this.prot = -this.rotSpeed;
 		} else if(controller.KeyPressed(40)) { //Down
-			this.prot = 1;
+			this.prot = this.rotSpeed;
 		}
 	}
 };
