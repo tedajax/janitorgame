@@ -11,8 +11,8 @@ function BlockShader()
 	
 	this.texture1 = 0;
 	
-	this.minFogDist = 20.0;
-	this.maxFogDist = 50.0;
+	this.minFogDist = 50.0;
+	this.maxFogDist = 120.0;
 	this.fogColor = Vector.create([0.5, 0.5, 0.8]);
 	this.fogEnabled = true;
 	

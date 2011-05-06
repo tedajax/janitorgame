@@ -10,10 +10,10 @@ function loadModels()
 
 function GameObject()
 {
-	this.position;
-	this.velocity;
-	this.rotation;
-	this.scale;
+	this.position = Vector.create([0.0, 0.0, 0.0]);
+	this.velocity = Vector.create([0.0, 0.0, 0.0]);
+	this.rotation = 0.0;
+	this.scale = Vector.create([1.0, 1.0, 1.0]);
 	
 	this.model;
 	
