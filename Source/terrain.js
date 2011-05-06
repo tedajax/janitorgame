@@ -37,7 +37,7 @@ function Terrain()
 
 Terrain.prototype.loadTextures = function (urls) {
 	for(var i = 0; i < urls.length; i++) {
-		this.textures.push(aManager.getTexture(urls[i]));
+		this.textures.push(engine.aManager.getTexture(urls[i]));
 	}
 };
 
