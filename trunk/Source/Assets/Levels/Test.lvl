@@ -1,13 +1,26 @@
-//Test Level
-#Begin Level
+Test Level
+#BeginLevel
 
-#Begin Blocks
-	#Block 1 
-	#Position 0 0 0
-	#Texture sand
-#End Blocks
+#BeginBlocks
 
-#Begin Triggers
-#End Triggers
+#Block 0
+#Position 0 0 0
+#Texture sand
+#End 1
 
-#End Level
+#Block 1
+#Position 2 2 0
+#Texture sand
+#End 1
+
+#Block 2
+#Position 4 0 0
+#Texture sand
+#End 1
+
+#EndBlocks
+
+#BeginTriggers
+#EndTriggers
+
+#EndLevel

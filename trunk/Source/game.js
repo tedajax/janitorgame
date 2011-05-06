@@ -1,9 +1,10 @@
 var testTerrain;
 var tempscale = 0.1;
+
+var testLevel;
+
 //var aManager;
 //var engine;
-var testBlock;
-
 function lightingAndNormals()
 {
 	nMatrix = mvMatrix.inverse();
@@ -37,13 +38,13 @@ function drawScene()
 	
 	camTransforms();	
 	testTerrain.draw();
-	testBlock.draw();
+	
+	testLevel.draw();
 };
 
 
 function update()
 {
-	
 }
 
 function tick()
@@ -59,8 +60,10 @@ function gameStart()
 //	engine = new Engine();
 	engine.init();
 	webGLStart();
-	testBlock = new Block();
-	testBlock.setTexture(engine.aManager.getTexture("Assets/Textures/grass.png"));
+	
+	testLevel = new Level();
+	testLevel.loadLevel("Test.lvl");
+	
 	//aManager = new AssetManager();
 	document.onkeydown = handleKeyDown;
 	document.onkeyup = handleKeyUp;
