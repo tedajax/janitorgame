@@ -71,15 +71,15 @@ function lookAt(ex, ey, ez, cx, cy, cz, ux, uy, uz)
 };
  
 
-function webGLStart()
-{
-	var canvas = document.getElementById("canvas");
+// function webGLStart()
+// {
+	// var canvas = document.getElementById("canvas");
 	
-	initGL(canvas);
+	// initGL(canvas);
 	
-	gl.clearColor(0.0, 0.5, 0.7, 1.0);
-	gl.clearDepth(1.0);
+	// gl.clearColor(0.0, 0.5, 0.7, 1.0);
+	// gl.clearDepth(1.0);
 	
-	gl.enable(gl.DEPTH_TEST);
-	gl.depthFunc(gl.LEQUAL);
-};
+	// gl.enable(gl.DEPTH_TEST);
+	// gl.depthFunc(gl.LEQUAL);
+// };
