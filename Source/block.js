@@ -5,6 +5,7 @@ function Block()
 	this.GameObject();
 	
 	this.texture;
+	this.textureName;
 	this.model = new BlockGeom();
 	
 	this.initialize();
@@ -27,9 +28,14 @@ Block.prototype.setTexture = function(tex)
 	this.texture = tex;
 };
 
+Block.prototype.loadTextureName = function()
+{
+	this.texture = engine.aManager.getTexture("Assets/Textures/" + this.textureName);
+};
+
 Block.prototype.update = function()
 {
-	position[0] += 0.1;
+	this.position[0] += 0.1;
 };
 
 Block.prototype.updateShader = function()
