@@ -13,7 +13,6 @@ Engine.prototype.getDeltaTime = function() {
 	var currTime =  new Date().getTime();
 	var dTime = currTime - this.lastTime;
 	this.lastTime = currTime;
-	console.log(dTime);
 	return dTime * 0.001;
 };
 
