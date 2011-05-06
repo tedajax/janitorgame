@@ -11,9 +11,7 @@ function Player() {
 	this.side = 0;
 	this.yrot = 0;
 	this.prot = 0;
-	this.useController = false;
-	this.moveSpeed = 2;
-	this.rotSpeed = 4;
+	this.useController = true;
 	
 	this.Init();
 };
@@ -66,28 +64,28 @@ Player.prototype.CheckInput = function() {
 		}
 	} else {
 		if(controller.KeyPressed(87)) { //W
-			this.forward = this.moveSpeed;
+			this.forward = this.forward = 1;
 		} else if(controller.KeyPressed(83)) { //S
-			this.forward = -this.moveSpeed;
+			this.forward = this.forward = -1;
 		}
 
 		if(controller.KeyPressed(68)) { //D
-			this.side = this.moveSpeed;
+			this.side = this.side = 1;
 		} else if(controller.KeyPressed(65)) { //A
-			this.side = -this.moveSpeed;
+			this.side = this.side = -1;
 		}
 
 
 		if(controller.KeyPressed(39)) { //Right
-			this.yrot = this.rotSpeed;
+			this.yrot = 1;
 		} else if(controller.KeyPressed(37)) { //Left
-			this.yrot = -this.rotSpeed;
+			this.yrot = -1;
 		}
 
 		if(controller.KeyPressed(38)) { //Up
-			this.prot = -this.rotSpeed;
+			this.prot = -1;
 		} else if(controller.KeyPressed(40)) { //Down
-			this.prot = this.rotSpeed;
+			this.prot = 1;
 		}
 	}
 };
