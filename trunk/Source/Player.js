@@ -34,28 +34,36 @@ Player.prototype.Draw = function() {
 };
 
 Player.prototype.CheckInput = function() {
-	if(controller.KeyPressed(87)) { //W
-		this.forward = 1;
-	} else if(controller.KeyPressed(83)) { //S
-		this.forward = -1;
+	if(!(controller.KeyPressed(87) && controller.KeyPressed(83))) {
+		if(controller.KeyPressed(87)) { //W
+			this.forward = 1;
+		} else if(controller.KeyPressed(83)) { //S
+			this.forward = -1;
+		}
 	}
 	
-	if(controller.KeyPressed(68)) { //D
-		this.side = 1;
-	} else if(controller.KeyPressed(65)) { //A
-		this.side = -1;
+	if(!(controller.KeyPressed(68) && controller.KeyPressed(65))) {
+		if(controller.KeyPressed(68)) { //D
+			this.side = 1;
+		} else if(controller.KeyPressed(65)) { //A
+			this.side = -1;
+		}
 	}
 	
-	if(controller.KeyPressed(39)) { //Right
-		this.yrot = 1;
-	} else if(controller.KeyPressed(37)) { //Left
-		this.yrot = -1;
+	if(!(controller.KeyPressed(39) && controller.KeyPressed(37))) {
+		if(controller.KeyPressed(39)) { //Right
+			this.yrot = 1;
+		} else if(controller.KeyPressed(37)) { //Left
+			this.yrot = -1;
+		}
 	}
 	
-	if(controller.KeyPressed(38)) { //Up
-		this.prot = -1;
-	} else if(controller.KeyPressed(40)) { //Down
-		this.prot = 1;
+	if(!(controller.KeyPressed(38) && controller.KeyPressed(40))) {
+		if(controller.KeyPressed(38)) { //Up
+			this.prot = -1;
+		} else if(controller.KeyPressed(40)) { //Down
+			this.prot = 1;
+		}
 	}
 };
 
