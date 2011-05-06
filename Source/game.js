@@ -34,8 +34,7 @@ function drawScene()
 	perspective(70, gl.viewportWidth / gl.viewportHeight, 0.1, 10000.0);
 	loadIdentity();
 	
-	camTransforms();
-	
+	camTransforms();	
 	testTerrain.draw();
 };
 
