@@ -1,75 +1,43 @@
-var eyeX = 50, eyeY = 50, eyeZ = 50;
-var yaw = 180, pitch = 0, roll = 0;
-
-var moveX = 0, moveY = 0, moveZ = 0;
-var yawDelta = 0;
-
-var pressedKeys = Object();
-function handleKeyDown(event)
-{
-	pressedKeys[event.keyCode] = true;	
+function Camera(player) {
+	this.player = player;
+	this.X = 0;
+	this.Y = 0;
+	this.Z = 0;
+	this.yaw = 0;
+	this.pitch = 0;
+	
+	//this.Init();
 };
 
-function handleKeyUp(event)
-{
-	pressedKeys[event.keyCode] = false;
-	if (event.keyCode == 32)
-		bulletFired = false;
+// Camera.prototype.Init = function() {
+	// this.X = this.player.position.e(1);
+	// this.Y = this.player.position.e(2);
+	// this.Z = this.player.position.e(3);
+	// this.yaw = this.player.rotation;
+// };
+
+Camera.prototype.SetPosition = function(position) {
+	this.X = position.e(1);
+	this.Y = position.e(2);
+	this.Z = position.e(3);
+};
+	
+Camera.prototype.SetRotation = function(yaw, pitch) {
+	this.yaw = yaw;
+	this.pitch = pitch;
 };
 
-function handleKeys()
-{
-	if (pressedKeys[39])
-		yawDelta = 4.0;
-	if (pressedKeys[37])
-		yawDelta = -4.0;
-	
-	if (pressedKeys[65])
-		moveX = -1.0;
-	if (pressedKeys[68])
-		moveX = 1.0;
-	if (pressedKeys[83])
-		moveZ = -1.0;
-	if (pressedKeys[87])
-		moveZ = 1.0;
-	
+// Camera.prototype.Update = function() {
+	// this.X = this.player.position.e(1);
+	// this.Y = this.player.position.e(2);
+	// this.Z = this.player.position.e(3);
+	// this.yaw = this.player.rotation;
+// }
 
-	
-
-	//if (pressedKeys[38])
-	//	moveY = 2.0;
-	//if (pressedKeys[40])
-	//	moveY = -2.0;
-};
-
-function moveCamera()
-{
-	var PIOVER180 = Math.PI / 180;
-	
-	eyeX += Math.cos(yaw * PIOVER180) * moveX;
-	eyeZ += Math.sin(yaw * PIOVER180) * moveX;
-	
-	eyeX += Math.cos((yaw - 90) * PIOVER180) * moveZ;
-	eyeZ += Math.sin((yaw - 90) * PIOVER180) * moveZ;
-	
-	//eyeY += moveY;
-	eyeY = testTerrain.getHeight(eyeX, eyeZ) + 10.0;
-	
-	yaw += yawDelta;
-	
-	pitch = 0;
-	
-	yawDelta = 0;
-	moveX = 0;
-	moveY = 0;
-	moveZ = 0;
-};
-
-function camTransforms()
-{
+Camera.prototype.Transforms = function() {
 	mvTranslate([0.0, 0.0, 0.0]);
-	mvRotate(pitch, [1, 0, 0]);
-	mvRotate(yaw, [0, 1, 0]);
+	mvRotate(this.pitch, [1, 0, 0]);
+	mvRotate(this.yaw, [0, 1, 0]);
 	
-	mvTranslate([-eyeX, -eyeY, -eyeZ]);
+	mvTranslate([-this.X, -this.Y, -this.Z]);
 };

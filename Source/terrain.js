@@ -247,7 +247,7 @@ Terrain.prototype.draw = function()
 	{		
 		gl.useProgram(this.shader.program);
 	
-		this.shader.cameraPosition = Vector.create([eyeX, eyeY, eyeZ]);
+		this.shader.cameraPosition = Vector.create([camera.X, camera.Y, camera.Z]);
 	
 		//set textures
 		gl.activeTexture(gl.TEXTURE0);

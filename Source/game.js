@@ -1,10 +1,15 @@
 var testTerrain;
 var tempscale = 0.1;
+var controller;
 
 var testLevel;
 
 //var aManager;
 //var engine;
+var testBlock;
+var camera;
+var player;
+
 function lightingAndNormals()
 {
 	nMatrix = mvMatrix.inverse();
@@ -23,7 +28,7 @@ function lightingAndNormals()
 
 	gl.uniform3f(shaderProgram.directionalColorUniform, 0.6, 0.6, 0.6);
 	gl.uniform3f(shaderProgram.specularColorUniform, 0.4, 0.4, 0.4);
-	gl.uniform3f(shaderProgram.cameraPositionUniform, eyeX, eyeY, eyeZ);
+	gl.uniform3f(shaderProgram.cameraPositionUniform, camera.X, camera.Y, camera.Z);
 	
 	//gl.uniform3f(shaderProgram.lightingEnabledUniform, true);
 };
@@ -36,7 +41,7 @@ function drawScene()
 	perspective(70, gl.viewportWidth / gl.viewportHeight, 0.1, 10000.0);
 	loadIdentity();
 	
-	camTransforms();	
+	camera.Transforms();	
 	testTerrain.draw();
 	
 	testLevel.draw();
@@ -45,30 +50,32 @@ function drawScene()
 
 function update()
 {
+	player.Update(engine.getDeltaTime());
 }
 
 function tick()
 {
-	handleKeys();
-	drawScene();
-	moveCamera();
 	update();
+	drawScene();	
 }
 
 function gameStart()
 {
-//	engine = new Engine();
 	engine.init();
+	camera = new Camera();
 	webGLStart();
+	controller = new Controller();
+	player = new Player();
+	testBlock = new Block();
+	testBlock.setTexture(engine.aManager.getTexture("Assets/Textures/grass.png"));
 	
 	testLevel = new Level();
 	testLevel.loadLevel("Test.lvl");
 	
-	//aManager = new AssetManager();
-	document.onkeydown = handleKeyDown;
-	document.onkeyup = handleKeyUp;
+	document.onkeydown = controller.handleKeyDown;
+	document.onkeyup = controller.handleKeyUp;
 	testTerrain = new Terrain();
 	
-	setInterval(tick, 16);
+	setInterval(tick, 160);
 };
 

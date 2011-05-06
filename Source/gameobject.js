@@ -1,13 +1,3 @@
-function Models()
-{
-
-};
-
-function loadModels()
-{
-
-};
-
 function GameObject()
 {
 	this.position = Vector.create([0.0, 0.0, 0.0]);
