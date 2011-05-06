@@ -1,10 +1,11 @@
 function Engine()
 {
-
+	
 };
 
 Engine.prototype.init = function()
 {
+	this.aManager = new AssetManager();
 };
 
 Engine.prototype.getFileString = function(url)

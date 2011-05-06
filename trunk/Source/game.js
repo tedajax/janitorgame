@@ -1,8 +1,8 @@
 var testTerrain;
 var tempscale = 0.1;
-var aManager;
-
-var blocktest;
+//var aManager;
+//var engine;
+var testBlock;
 
 function lightingAndNormals()
 {
@@ -37,7 +37,7 @@ function drawScene()
 	
 	camTransforms();	
 	testTerrain.draw();
-	blocktest.draw();
+	testBlock.draw();
 };
 
 
@@ -56,17 +56,15 @@ function tick()
 
 function gameStart()
 {
+//	engine = new Engine();
+	engine.init();
 	webGLStart();
-		
-	aManager = new AssetManager();
+	testBlock = new Block();
+	testBlock.setTexture(engine.aManager.getTexture("Assets/Textures/grass.png"));
+	//aManager = new AssetManager();
 	document.onkeydown = handleKeyDown;
 	document.onkeyup = handleKeyUp;
 	testTerrain = new Terrain();
-	
-	engine.init();
-	
-	blocktest = new Block();
-	blocktest.setTexture(aManager.getTexture("./Assets/Textures/sand.png"));
 	
 	setInterval(tick, 16);
 };
