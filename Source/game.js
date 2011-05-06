@@ -76,6 +76,6 @@ function gameStart()
 	document.onkeyup = controller.handleKeyUp;
 	testTerrain = new Terrain();
 	
-	setInterval(tick, 160);
+	setInterval(tick, 16);
 };
 
