@@ -2,7 +2,7 @@ var testTerrain;
 var tempscale = 0.1;
 var aManager;
 
-
+var blocktest;
 
 function lightingAndNormals()
 {
@@ -37,6 +37,7 @@ function drawScene()
 	
 	camTransforms();	
 	testTerrain.draw();
+	blocktest.draw();
 };
 
 
@@ -63,6 +64,9 @@ function gameStart()
 	testTerrain = new Terrain();
 	
 	engine.init();
+	
+	blocktest = new Block();
+	blocktest.setTexture(aManager.getTexture("./Assets/Textures/sand.png"));
 	
 	setInterval(tick, 16);
 };

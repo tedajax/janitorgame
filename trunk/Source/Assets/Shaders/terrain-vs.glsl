@@ -60,8 +60,10 @@ void main(void)
 		
 	vFogColor = vec4(uFogColor, 1.0);
 	
-	vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting + uSpecularColor * specularLightWeighting;
+	vLightWeighting = (uAmbientColor + uDirectionalColor * directionalLightWeighting + uSpecularColor * specularLightWeighting) + vFogWeight;
 
+	//vLightWeighting *= (1.0 - vFogWeight);
+	
 	vTextureCoord = aTextureCoord;
 	vVertexPosition = aVertexPosition;
 }
