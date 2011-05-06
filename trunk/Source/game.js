@@ -1,20 +1,6 @@
 var testTerrain;
-//var terrShader;
 var tempscale = 0.1;
 var aManager;
-
-
-//Textures class which stores all the textures
-function textures()
-{
-	textures.grass;
-	textures.rock;
-	textures.snow;
-	textures.sand;
-		
-	textures.loaded = false;
-};
-
 
 
 function lightingAndNormals()
@@ -70,27 +56,13 @@ function tick()
 function gameStart()
 {
 	webGLStart();
-	
-	
+		
 	aManager = new AssetManager();
-	loadTextures();
-	loadModels();
 	document.onkeydown = handleKeyDown;
 	document.onkeyup = handleKeyUp;
 	testTerrain = new Terrain();
-//	terrShader = new TerrainShader();
 	engine.init();
 	
 	setInterval(tick, 16);
 };
 
-function loadTextures()
-{
-	textures.teapot = loadTexture("teapot.png");
-	textures.grass = loadTexture("grass.png");
-	textures.rock = loadTexture("rock.png");
-	textures.snow = loadTexture("snow.png");
-	textures.sand = loadTexture("sand.png");
-	textures.shrub = loadTexture("bush.png");
-	textures.pink = loadTexture("pink.png");
-};
