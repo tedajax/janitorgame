@@ -11,8 +11,8 @@ function Player() {
 	this.side = 0;
 	this.yrot = 0;
 	this.prot = 0;
-	this.useController = true;
-	
+	this.useController = false;
+	this.rotSpeed = 4;
 	this.Init();
 };
 
@@ -77,17 +77,20 @@ Player.prototype.CheckInput = function() {
 
 
 		if(controller.KeyPressed(39)) { //Right
-			this.yrot = 1;
+			this.yrot = this.rotSpeed;;
 		} else if(controller.KeyPressed(37)) { //Left
-			this.yrot = -1;
+			this.yrot = -this.rotSpeed;
 		}
 
 		if(controller.KeyPressed(38)) { //Up
-			this.prot = -1;
+			this.prot = -this.rotSpeed;
 		} else if(controller.KeyPressed(40)) { //Down
-			this.prot = 1;
+			this.prot = this.rotSpeed;
 		}
 	}
+	
+	if (controller.KeyPressed(84))
+		this.useController = !this.useController;
 };
 
 Player.prototype.MovePlayer = function(dTime) {
