@@ -5,6 +5,7 @@ var controller;
 var testLevel;
 var camera;
 var player;
+var menuManager;
 
 
 function initGL(canvas) {
@@ -15,6 +16,8 @@ function initGL(canvas) {
 	if(!gl) {
 		alert("Could not initialize WebGL");
 	}
+	gl.enable(gl.DEPTH_TEST);
+	gl.depthFunc(gl.LEQUAL);
 };
 
 function Init() {
@@ -28,8 +31,16 @@ function Init() {
 	controller = new Controller();
 	player = new Player();
 	
+	menuManager = new MenuManager();
+	
+	var menuScreen = new Menu("Game Menu", false);
+	menuScreen.addBackgroundImage("./Assets/Textures/janitor.png");
+	menuScreen.addItem('Play Game', 25, 75, 'bold 20pt Papyrus', 'rgb(255,255,255)');
+	menuManager.addMenu(menuScreen);
+
 	testLevel = new Level();
 	testLevel.loadLevel("Test.lvl");
+	
 	
 	document.onkeydown = controller.handleKeyDown;
 	document.onkeyup = controller.handleKeyUp;
@@ -37,8 +48,6 @@ function Init() {
 	
 	gl.clearColor(0.0, 0.5, 0.7, 1.0);
 	gl.clearDepth(1.0);	
-	gl.enable(gl.DEPTH_TEST);
-	gl.depthFunc(gl.LEQUAL);
 	
 	setInterval(tick, 16);
 };
