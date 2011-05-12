@@ -1,4 +1,5 @@
 //var engine = new Engine();
+var testTerrain;
 var terrain;
 var tempscale = 0.1;
 var controller;
@@ -6,6 +7,7 @@ var testLevel;
 var camera;
 var player;
 var isLoaded;
+var boss;
 
 function initGL(canvas) {
 	try {
@@ -26,17 +28,23 @@ function Init() {
 	canvas.height = 600;
 	engine.init();
 	
+	loadIdentity();
+	
 	var assets = new Array();
 	assets.push(new AssetHolder("sand.png", 2));
 	assets.push(new AssetHolder("grass.png", 2));
 	assets.push(new AssetHolder("rock.png", 2));
 	assets.push(new AssetHolder("snow.png", 2));
+	assets.push(new AssetHolder("Column.obj", 3));
+	assets.push(new AssetHolder("SlimeKing.png", 2));
 	engine.aManager.BulkLoad(assets);
-	
+
 	camera = new Camera();
 	
 	controller = new Controller();
 	player = new Player();
+	
+	boss = new Boss();
 	
 	gl.enable(gl.DEPTH_TEST);
 	gl.depthFunc(gl.LEQUAL);
@@ -67,9 +75,11 @@ function drawScene()
 		
 		camera.Transforms();	
 		terrain.draw();
+		boss.draw();
 	} else { //Draw progress bar
 	
 	}
+	
 };
 
 

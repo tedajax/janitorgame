@@ -43,6 +43,9 @@ function Terrain()
 //returns height of terrain as given location
 Terrain.prototype.getHeight = function(xPos, zPos)
 {
+	if (!this.isLoaded)
+		return 0;
+
 	//check to see if location is within terrain space
 	if (xPos < 0 || zPos < 0)
 		return 0;
