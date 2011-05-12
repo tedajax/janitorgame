@@ -10,6 +10,7 @@ function Boss()
 	Boss.JUMP_STATE = 3;
 	Boss.JUMP_HOVER_STATE = 4;
 	Boss.JUMP_SLAM_STATE = 5;
+	Boss.FORCE_FOLLOW_STATE = 6;
 	
 	this.state = 1;
 	this.percept = new Percept();
@@ -64,6 +65,7 @@ Boss.prototype.update = function(newPerc)
 	this.percept.actor.velocity = this.velocity;
 	this.percept.target.position = newPerc.target.position;
 	this.percept.target.rotation = newPerc.target.rotation;
+	this.percept.state = this.state; 
 	
 	thght = terrain.getHeight(this.position.e(1), this.position.e(3));
 	
@@ -132,7 +134,7 @@ Boss.prototype.update = function(newPerc)
 			this.jumpHeight += this.velocity.elements[1];
 				
 			this.velocity.elements[1] -= 0.1;		
-			this.percept.timer = 200;
+			this.percept.timer = 70;
 			break;
 			
 		case Boss.JUMP_HOVER_STATE:
@@ -141,6 +143,11 @@ Boss.prototype.update = function(newPerc)
 			
 		case Boss.JUMP_SLAM_STATE:
 			this.jumpHeight -= 2.0;
+			if (this.jumpHeight <= 0)
+			{
+				this.jumpHeight = 0;
+				this.position.elements[1] = thght;
+			}
 			break;
 	}	
 	
