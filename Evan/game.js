@@ -58,6 +58,7 @@ function Init() {
 	document.onkeyup = controller.handleKeyUp;
 	terrain = new Terrain();
 	net = new serverLoop();
+	serverLoop.sendPlayerData(boss, player);
 	
 	setInterval(tick, 16);
 };
