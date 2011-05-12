@@ -86,7 +86,7 @@ ProjectileList.prototype.CheckCollision = function() {
 		var bossPos = boss.position;
 	
 		var dx = this.pArray[x].position.e(1) - bossPos.e(1);
-		var dy = this.pArray[x].position.e(2) - bossPos.e(2);
+		var dy = (this.pArray[x].position.e(2) - bossPos.e(2)) / 2;
 		var dz = this.pArray[x].position.e(3) - bossPos.e(3);
 	
 		var distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2));
