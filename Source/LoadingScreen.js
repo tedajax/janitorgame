@@ -1,50 +1,111 @@
-/*****************************************
-*										 *
-*			Loading Screen			 	 *
-*										 *
-******************************************/
-
 function LoadingScreen() {
+	this.canvas = document.getElementById("loadingCanvas");
+	this.ctx = this.canvas.getContext('2d');
+	this.canvas.style.visiability = "visible";
+	this.canvas.style.position = "absolute";
+	this.canvas.style.top = "0px";
+	this.canvas.style.left = "0px";
+	
 	this.i = 0;
 	this.res = 0;
-	this.context = null;
 	this.total_width = 300;
 	this.total_height = 34;
 	this.initial_x = 20;
 	this.initial_y = 20;
-	this.radius = total_height/2;
-	this.elem = document.getElementById('canvas');
-	if(!this.elem || !this.elem.getContext) {
-		return;
-	}
+	this.radius = this.total_height/2;
 	
-	this.context = this.elem.getContext('2d');
-	if(this.context) {
-		return;
-	}
-	
-	//Set font
-	this.context.font = "16px Verdana";
-	
-	this.progress_lingrad = this.context.createLinearGradient(
-							0,this.initial_y+this.total_height,0,0);
+	this.ctx.font = "16px Verdana";
+	this.progress_lingrad = this.ctx.createLinearGradient(0,this.initial_y+this.total_height,0,0);
 	this.progress_lingrad.addColorStop(0, '#4DA4F3');
 	this.progress_lingrad.addColorStop(0.4, '#ADD9FF');
 	this.progress_lingrad.addColorStop(1, '#9ED1FF');
-	this.context.fillStyle = this.progress_lingrad;
+    this.ctx.fillStyle = this.progress_lingrad;	
 };
 
-LoadingScreen.prototype.update = function(i) {
-	this.i = i;
+LoadingScreen.prototype.update = function(percent) {
+		var cont=this.canvas.parentNode;
+		if ((this.canvas.width!=cont.clientWidth)||(this.canvas.height!=cont.clientHeight))
+		{
+			this.canvas.width=cont.clientWidth;
+			this.canvas.height=cont.clientHeight;
+		}
+		this.i = percent * 3 - 1;
+		
 };
+
+LoadingScreen.prototype.clearScreen = function() {
+	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
 
 LoadingScreen.prototype.draw = function() {
-	// Clear everything before drawing
-	this.context.clearRect(this.initial_x-5,this.initial_y-5,this.total_width+15,this.total_height+15);
-	progressLayerRect(this.context, this.initial_x, this.initial_y, this.total_width, this.total_height, this.radius);
-	progressBarRect(this.context, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width);
-	progressText(this.context, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width );   
+// if(this.i <= 100){
+this.i+=1;
+		// this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		// this.ctx.fillRect(25,25,100,100);
+		
+		// Clear everything before drawing
+		this.ctx.clearRect(this.initial_x-5,this.initial_y-5,this.total_width+15,this.total_height+15);
+		this.progressLayerRect(this.ctx, this.initial_x, this.initial_y, this.total_width, this.total_height, this.radius);
+		this.progressBarRect(this.ctx, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width);
+		this.progressText(this.ctx, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width );
+	// }
 };
+
+// x/*****************************************
+// *										 *
+// *			Loading Screen			 	 *
+// *										 *
+// ******************************************/
+
+// function LoadingScreen() {
+	// this.i = 0;
+	// this.res = 0;
+	// this.context = null;
+	// this.total_width = 300;
+	// this.total_height = 34;
+	// this.initial_x = 20;
+	// this.initial_y = 20;
+	// this.radius = this.total_height / 2;
+	// this.elem = document.getElementById('loadingCanvas');
+	// if(!this.elem || !this.elem.getContext) {
+		// return;
+	// }
+	// this.elem.style.visiability = "visible";
+	// this.elem.style.position = "absolute";
+	// this.elem.style.top = '0px';
+	// this.elem.style.left = '0px';
+	
+	// this.context = this.elem.getContext('2d');
+	// if(this.context) {
+		// return;
+	// }
+	
+	// //Set font
+	// this.context.font = "16px Verdana";
+	
+	// this.progress_lingrad = this.context.createLinearGradient(
+							// 0,this.initial_y+this.total_height,0,0);
+	// this.progress_lingrad.addColorStop(0, '#4DA4F3');
+	// this.progress_lingrad.addColorStop(0.4, '#ADD9FF');
+	// this.progress_lingrad.addColorStop(1, '#9ED1FF');
+	// this.context.fillStyle = this.progress_lingrad;
+	
+	// this.elem.style.zIndex = '10';
+// };
+
+// LoadingScreen.prototype.update = function(i) {
+	// this.i = i;
+// };
+
+// LoadingScreen.prototype.draw = function() {
+	// // Clear everything before drawing
+	// this.context.clearrect(this.initial_x-5,this.initial_y-5,this.total_width+15,this.total_height+15);
+	// this.progresslayerrect(this.context, this.initial_x, this.initial_y, this.total_width, this.total_height, this.radius);
+	// this.progressbarrect(this.context, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width);
+	// this.progresstext(this.context, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width );
+
+	
+// };
 
 /**
  * Draws a rounded rectangle.
@@ -55,7 +116,7 @@ LoadingScreen.prototype.draw = function() {
  * @param {Number} height The height of the rectangle
  * @param {Number} radius The corner radius;
  */
-function roundRect(ctx, x, y, width, height, radius) {
+LoadingScreen.prototype.roundRect = function(ctx, x, y, width, height, radius) {
 	ctx.beginPath();
 	ctx.moveTo(x + radius, y);
 	ctx.lineTo(x + width - radius, y);
@@ -76,7 +137,7 @@ function roundRect(ctx, x, y, width, height, radius) {
  * @param {Number} radius The corner radius;
  */
 
-function roundInsetRect(ctx, x, y, width, height, radius) {
+LoadingScreen.prototype.roundInsetRect = function(ctx, x, y, width, height, radius) {
 	ctx.beginPath();
 	// Draw huge anti-clockwise box
 	ctx.moveTo(1000, 1000);
@@ -93,7 +154,7 @@ function roundInsetRect(ctx, x, y, width, height, radius) {
 	ctx.fill();
 }
 
-function progressLayerRect(ctx, x, y, width, height, radius) {
+LoadingScreen.prototype.progressLayerRect = function(ctx, x, y, width, height, radius) {
 	ctx.save();
 	// Set shadows to make some depth
 	ctx.shadowOffsetX = 2;
@@ -103,7 +164,7 @@ function progressLayerRect(ctx, x, y, width, height, radius) {
 
 	 // Create initial grey layer
 	ctx.fillStyle = 'rgba(189,189,189,1)';
-	roundRect(ctx, x, y, width, height, radius);
+	this.roundRect(ctx, x, y, width, height, radius);
 
 	// Overlay with gradient
 	ctx.shadowColor = 'rgba(0,0,0,0)'
@@ -112,7 +173,7 @@ function progressLayerRect(ctx, x, y, width, height, radius) {
 	lingrad.addColorStop(0.4, 'rgba(255,255,255, 0.7)');
 	lingrad.addColorStop(1, 'rgba(255,255,255,0.4)');
 	ctx.fillStyle = lingrad;
-	roundRect(ctx, x, y, width, height, radius);
+	this.roundRect(ctx, x, y, width, height, radius);
 
 	ctx.fillStyle = 'white';
 	//roundInsetRect(ctx, x, y, width, height, radius);
@@ -130,7 +191,7 @@ function progressLayerRect(ctx, x, y, width, height, radius) {
  * @param {Number} radius The corner radius;
  * @param {Number} max The under-layer total width;
  */
-function progressBarRect(ctx, x, y, width, height, radius, max) {
+LoadingScreen.prototype.progressBarRect = function(ctx, x, y, width, height, radius, max) {
 	// var to store offset for proper filling when inside rounded area
 	var offset = 0;
 	ctx.beginPath();
@@ -168,7 +229,7 @@ function progressBarRect(ctx, x, y, width, height, radius, max) {
 		ctx.shadowColor = '#666';
 		if (width+radius>max)
 		  offset = offset+1;
-		ctx.fillRect(x+width,y+offset,1,total_height-offset*2);
+		ctx.fillRect(x+width,y+offset,1,this.total_height-offset*2);
 		ctx.restore();
 	}
 }
@@ -183,7 +244,7 @@ function progressBarRect(ctx, x, y, width, height, radius, max) {
  * @param {Number} radius The corner radius;
  * @param {Number} max The under-layer total width;
  */
-function progressText(ctx, x, y, width, height, radius, max) {
+LoadingScreen.prototype.progressText = function(ctx, x, y, width, height, radius, max) {
 	ctx.save();
 	ctx.fillStyle = 'white';
 	var text = Math.floor(width/max*100)+"%";

@@ -22,7 +22,6 @@ Player.prototype.Init = function() {
 };
 
 Player.prototype.Update = function(dTime) {
-	//console.log("Player Update");
 	this.CheckInput();
 	this.MovePlayer(dTime);
 	this.Reset();

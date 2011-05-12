@@ -36,13 +36,7 @@ AssetManager.prototype.CheckStatus = function(){
 		}
 	}
 	for(var i = 0; i < this.objects.length; i++)
-	{
-		if(this.objects[i].loaded)  
-		{ 
-			numLoaded++; 
-			
-		} 
-	}
+		if(this.objects[i].loaded)  { numLoaded++; }
 	var percent = (numLoaded / this.numAssets) * 100;
 	if(percent == 100) { this.isLoaded = true; }
 	return percent
