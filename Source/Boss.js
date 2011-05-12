@@ -14,7 +14,8 @@ function Boss()
 	this.shader;
 	
 	this.jumpHeight = 0;
-	
+	this.collisionRadius = 20;
+	this.health = 100000;
 	this.initialize();
 };
 
@@ -53,7 +54,7 @@ Boss.prototype.updateShader = function()
 Boss.prototype.update = function(newPerc)
 {
 	var thght;
-
+	console.log(this.health);
 	this.percept.actor.position = this.position;
 	this.percept.actor.rotation = this.rotation;
 	this.percept.actor.state = this.state;
@@ -136,4 +137,13 @@ Boss.prototype.draw = function()
 	gl.drawElements(gl.TRIANGLE_STRIP, this.model.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
 	
 	mvMatrix = storeMV;
+};
+
+Boss.prototype.Health = function(i) {
+	this.health += i;
+	console.log(this.health);
+};
+
+Boss.prototype.getCollisionRadius = function(){
+	return this.collisionRadius;
 };

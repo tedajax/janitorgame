@@ -66,7 +66,7 @@ ProjectileList.prototype.Update = function(timeElapsed) {
 		if(this.pArray[x].position.elements[2] < 68) { this.pArray[x].dead = true; }
 		if(this.pArray[x].position.elements[2] > 184) { this.pArray[x].dead = true; }
 	}
-//	this.CheckCollision();
+	this.CheckCollision();
 };
 
 ProjectileList.prototype.Draw = function() {
@@ -83,16 +83,16 @@ ProjectileList.prototype.Draw = function() {
 
 ProjectileList.prototype.CheckCollision = function() {	
 	for(var x = 0; x < this.pArray.length; x++) {
-		var enemyPos = enemy.getPosition();
+		var bossPos = boss.position;
 	
-		var dx = this.pArray[x].position.e(1) - enemyPos.e(1);
-		var dy = this.pArray[x].position.e(2) - enemyPos.e(2);
-		var dz = this.pArray[x].position.e(3) - enemyPos.e(3);
+		var dx = this.pArray[x].position.e(1) - bossPos.e(1);
+		var dy = this.pArray[x].position.e(2) - bossPos.e(2);
+		var dz = this.pArray[x].position.e(3) - bossPos.e(3);
 	
 		var distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2));
-		var sumradius = this.collisionRadius + enemy.getCollisionRadius();
+		var sumradius = this.collisionRadius + boss.getCollisionRadius();
 		if(distance < sumradius) { 
-			enemy.Health(-1); 
+			boss.Health(-1); 
 			this.pArray[x].dead = true;
 		}
 	}
