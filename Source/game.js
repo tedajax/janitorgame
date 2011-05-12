@@ -7,7 +7,6 @@ var camera;
 var player;
 var menuManager;
 
-
 function initGL(canvas) {
 	try {
 		gl = canvas.getContext("experimental-webgl");
@@ -37,10 +36,6 @@ function Init() {
 	menuScreen.addBackgroundImage("./Assets/Textures/janitor.png");
 	menuScreen.addItem('Play Game', 25, 75, 'bold 20pt Papyrus', 'rgb(255,255,255)');
 	menuManager.addMenu(menuScreen);
-
-	testLevel = new Level();
-	testLevel.loadLevel("Test.lvl");
-	
 	
 	document.onkeydown = controller.handleKeyDown;
 	document.onkeyup = controller.handleKeyUp;
@@ -92,8 +87,6 @@ function drawScene()
 	
 	camera.Transforms();	
 	testTerrain.draw();
-	
-	testLevel.draw();
 };
 
 
