@@ -13,5 +13,5 @@ void main(void)
 {
 	vec4 texCol = texture2D(uTexSampler0, vec2(vTextureCoord.s, vTextureCoord.t));
 
-	gl_FragColor = mix(texCol, vFogColor, vFogWeight);
+	gl_FragColor = vec4(mix(texCol, vFogColor, vFogWeight).rgb, 1.0);
 }

@@ -11,6 +11,8 @@ var loadingScreen;
 var boss;
 var perc;
 
+var ptest;
+
 function initGL(canvas) {
 	try {
 		gl = canvas.getContext("experimental-webgl");
@@ -39,6 +41,7 @@ function Init() {
 	assets.push(new AssetHolder("snow.png", 2));
 	assets.push(new AssetHolder("Column.obj", 3));
 	assets.push(new AssetHolder("SlimeKing.png", 2));
+	assets.push(new AssetHolder("greenparticle.png", 2));
 	engine.aManager.BulkLoad(assets);
 
 	camera = new Camera();
@@ -49,10 +52,17 @@ function Init() {
 	boss = new Boss();
 	perc = new Percept();
 	
+	ptest = new Particle();
+	ptest.position = Vector.create([128, 25, 128]);
+	ptest.texture = engine.aManager.getTexture("greenparticle.png");
+	
 	gl.enable(gl.DEPTH_TEST);
 	gl.depthFunc(gl.LEQUAL);
 	gl.clearColor(0.0, 0.5, 0.7, 1.0);
 	gl.clearDepth(1.0);	
+	
+	gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 	
 	document.onkeydown = controller.handleKeyDown;
 	document.onkeyup = controller.handleKeyUp;
@@ -76,10 +86,14 @@ function update()
 	{
 		player.Update(engine.getDeltaTime());
 		
+		//console.log(player.position.elements[1]);
+		
 		perc.target.position = player.position;
 		perc.target.rotation = player.rotation;
 			
 		boss.update(perc);
+		
+		ptest.update();
 	}
 };
 
@@ -100,8 +114,14 @@ function drawScene()
 		loadIdentity();
 		
 		camera.Transforms();	
+		
+		gl.disable(gl.BLEND);
 		terrain.draw();
 		boss.draw();
+		
+		gl.enable(gl.BLEND);
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+		ptest.draw();
 	} 
 	else 
 	{ //Draw progress bar

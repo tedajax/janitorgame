@@ -45,5 +45,5 @@ void main(void)
 	texCol.rgb = texCol.rgb * vLightWeighting;
 	texCol = mix(texCol, vFogColor, vFogWeight);
 
-	gl_FragColor = vec4(texCol.rgb, texCol.a);
+	gl_FragColor = vec4(texCol.rgb, 1.0);
 }
