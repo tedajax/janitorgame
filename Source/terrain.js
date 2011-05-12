@@ -10,6 +10,11 @@ function Terrain()
 	
 	this.urls = ["./Assets/Textures/sand.png","./Assets/Textures/grass.png","./Assets/Textures/rock.png","./Assets/Textures/snow.png"];
 	this.textures = new Array();
+	
+	this.textures.push(engine.aManager.getTexture("sand.png"));
+	this.textures.push(engine.aManager.getTexture("grass.png"));
+	this.textures.push(engine.aManager.getTexture("rock.png"));
+	this.textures.push(engine.aManager.getTexture("snow.png"));
 
 	this.scaleX = 2.0;
 	this.scaleZ = 2.0;
@@ -31,14 +36,8 @@ function Terrain()
 	};
 	
 	heightImage.src = "./Assets/Heightmaps/janitorterrain.png";
-	this.loadTextures(this.urls);
-	this.vertices;
-};
 
-Terrain.prototype.loadTextures = function (urls) {
-	for(var i = 0; i < urls.length; i++) {
-		this.textures.push(engine.aManager.getTexture(urls[i]));
-	}
+	this.vertices;
 };
 
 //returns height of terrain as given location

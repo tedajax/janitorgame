@@ -1,3 +1,8 @@
+function AssetHolder(url, type){
+	this.url = url;
+	this.type = type;
+};
+
 /* ***********************************
 *									 *
 *			Assets Manager			 *
@@ -8,6 +13,35 @@ function AssetManager() {
 	this.textures = new Array();
 	this.objects = new Array();
 	this.images = new Array();
+	this.isLoaded = false;
+	this.numAssets = 0;
+};
+
+AssetManager.prototype.CheckStatus = function(){
+	var numLoaded = 0;
+	for(var i = 0; i < this.textures.length; i++)
+		if(this.textures[i].isLoaded)	{ numLoaded++; }
+	for(var i = 0; i < this.images.length; i++)
+		if(this.images[i].isLoaded)	{ numLoaded++; }
+	for(var i = 0; i < this.images.length; i++)
+		if(this.images[i].isLoaded)  { numLoaded++; }
+	
+	return (numLoaded / this.numAssets) * 100;
+};
+
+AssetManager.prototype.BulkLoad = function(assets){
+	for(var i = 0; i < assets.length; i++) {
+		if(assets[i].type == 1) {  //Image Loader
+			this.LoadImage(".Assets/Images/" + assets[i].url);
+		} else if(assets[i].type == 2) { //Texture Loader
+			this.LoadTexture("./Assets/Textures/" + assets[i].url);
+		} else if(assets[i].type == 3) { //Object Loader
+			this.LoadObject("./Assets/Textures/" + assets[i].url);
+		} else {
+			var message = assets[i].url + "'s type doesn't exist, you idiot!";
+			console.log(message);
+		}
+	}
 };
 
 
@@ -16,66 +50,101 @@ function AssetManager() {
 *********************************** */
 AssetManager.prototype.getImage = function(url) {
 	//Check to see if image is already loaded
+	var p = "./Assets/Images/" + url;
 	for(var i = 0; i < this.images.length; i++) {
-		if(url == this.images[i].src) {
+		if(p == this.images[i].src) {
 			return this.images[i];
 		}
 	}
-	
+	var message = url + " not loaded.  Add to load list";
+	console.log(message);
+}
+
+AssetManager.prototype.LoadImage = function(url) {	
+	this.numAssets++;
 	//If image has not already been loaded then load it.
 	var image = new Image();
 	image.isLoaded = false;
 	image.onload = function() {
 		image.isLoaded = true;
-		console.log("image loaded");
 	}
 	this.images.push(image);
-	return image;
 };
 
 /* ***********************************
-*			Load Texture			 *
+*			 Textures			     *
 *********************************** */
 AssetManager.prototype.getTexture = function(url) {
 	//Check to see is texture is already loaded
+	var p = "./Assets/Textures/" + url;
 	for(var i = 0; i < this.textures.length; i++) {
-		if(url == this.textures[i].url) {
+		if(p == this.textures[i].url) {
 			return this.textures[i];
 		}
 	}
-	//If texture has not been loaded then load it
+	var message = url + " not loded.  Add to load list";
+	console.log(message);
+	return false;
+	// //If texture has not been loaded then load it
+	// var texture = gl.createTexture();
+	// texture.url = url;
+	// texture.isLoaded = false;
+	// texture.image = new Image();
+	// texture.image.onload = function() {
+		// bindTexture(texture);
+	// }
+	// texture.image.src = url;
+	// this.textures.push(texture);
+	// return texture;
+};
+
+AssetManager.prototype.LoadTexture = function(url) {
+	this.numAssets++;
 	var texture = gl.createTexture();
 	texture.url = url;
 	texture.isLoaded = false;
 	texture.image = new Image();
 	texture.image.onload = function() {
-		bindTexture(texture);
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+		gl.bindTexture(gl.TEXTURE_2D, texture);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.generateMipmap(gl.TEXTURE_2D);
+		gl.bindTexture(gl.TEXTURE_2D, null);
+		texture.isLoaded = true
 	}
 	texture.image.src = url;
 	this.textures.push(texture);
-	return texture;
 };
 
-bindTexture = function(texture) {
-	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.generateMipmap(gl.TEXTURE_2D);
-    gl.bindTexture(gl.TEXTURE_2D, null);
-	texture.isLoaded = true
-};
+// bindTexture = function(texture) {
+	// gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+	// gl.bindTexture(gl.TEXTURE_2D, texture);
+	// gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+	// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+	// gl.generateMipmap(gl.TEXTURE_2D);
+    // gl.bindTexture(gl.TEXTURE_2D, null);
+	// texture.isLoaded = true
+// };
 
 /* ***********************************
 *			Load Object				 *
 *********************************** */
 AssetManager.prototype.getModel = function(url) {
+	var p = "./Assets/Objects/" + url;
 	for(var i = 0; i < this.objects.length; i++) {
-		if(url == this.objects[i].url) {
+		if(p == this.objects[i].url) {
 			return this.objects[i];
 		}
 	}
+	var message = url + " not loaded.  Add to load list";
+	console.log(message);
+}
+
+AssetManager.prototype.LoadModel = function(url) {
+	this.numAssets++;
 	var obj = { loaded : false };
     obj.ctx = gl;
 	obj.url = url;
@@ -85,7 +154,6 @@ AssetManager.prototype.getModel = function(url) {
     req.open("GET", url, true);
     req.send(null);
 	this.objects.push(obj);
-    return obj;
 };
 
 function processLoadObj(req)
