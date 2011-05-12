@@ -9,7 +9,7 @@ var player;
 var isLoaded;
 var boss;
 var perc;
-var net;
+//var net;
 
 function initGL(canvas) {
 	try {
@@ -57,8 +57,6 @@ function Init() {
 	document.onkeydown = controller.handleKeyDown;
 	document.onkeyup = controller.handleKeyUp;
 	terrain = new Terrain();
-	net = new serverLoop();
-	serverLoop.sendPlayerData(boss, player);
 	
 	setInterval(tick, 16);
 };
