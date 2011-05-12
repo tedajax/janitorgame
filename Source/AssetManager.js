@@ -25,8 +25,9 @@ AssetManager.prototype.CheckStatus = function(){
 		if(this.images[i].isLoaded)	{ numLoaded++; }
 	for(var i = 0; i < this.images.length; i++)
 		if(this.images[i].isLoaded)  { numLoaded++; }
-	
-	return (numLoaded / this.numAssets) * 100;
+	var percent = (numLoaded / this.numAssets) * 100;
+	if(percent == 100) { this.isLoaded = true; }
+	return percent
 };
 
 AssetManager.prototype.BulkLoad = function(assets){
@@ -36,7 +37,7 @@ AssetManager.prototype.BulkLoad = function(assets){
 		} else if(assets[i].type == 2) { //Texture Loader
 			this.LoadTexture("./Assets/Textures/" + assets[i].url);
 		} else if(assets[i].type == 3) { //Object Loader
-			this.LoadObject("./Assets/Textures/" + assets[i].url);
+			this.LoadObject("./Assets/Objects/" + assets[i].url);
 		} else {
 			var message = assets[i].url + "'s type doesn't exist, you idiot!";
 			console.log(message);
@@ -143,7 +144,7 @@ AssetManager.prototype.getModel = function(url) {
 	console.log(message);
 }
 
-AssetManager.prototype.LoadModel = function(url) {
+AssetManager.prototype.LoadObject = function(url) {
 	this.numAssets++;
 	var obj = { loaded : false };
     obj.ctx = gl;

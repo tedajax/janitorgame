@@ -113,7 +113,7 @@ Player.prototype.MovePlayer = function(dTime) {
 		this.pitch += this.prot * this.speed * dTime;
 	}
 	
-	y = testTerrain.getHeight(x,z) + 10;
+	y = terrain.getHeight(x,z) + 10;
 	this.position = Vector.create([x,y,z]);
 };
 

@@ -28,7 +28,7 @@ function Terrain()
 	this.terrwidth;
 	this.terrheight;
 	
-	this.loaded = false;	
+	this.isLoaded = false;	
 	heightImage.p = this;
 	heightImage.onload = function()
 	{
@@ -227,7 +227,7 @@ Terrain.prototype.terrainGenerate = function(hmImage)
 	
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 	
-	this.loaded = true;
+	this.isLoaded = true;
 };
 
 Terrain.prototype.loadHeightmap = function(image)
@@ -241,53 +241,51 @@ Terrain.prototype.loadHeightmap = function(image)
 };
 
 Terrain.prototype.draw = function()
-{
-	if (this.loaded)
-	{		
-		gl.useProgram(this.shader.program);
-	
-		this.shader.cameraPosition = Vector.create([camera.X, camera.Y, camera.Z]);
-	
-		//set textures
-		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
-				
-		gl.activeTexture(gl.TEXTURE1);
-		gl.bindTexture(gl.TEXTURE_2D, this.textures[1]);
-			
-		gl.activeTexture(gl.TEXTURE2);
-		gl.bindTexture(gl.TEXTURE_2D, this.textures[2]);
-				
-		gl.activeTexture(gl.TEXTURE3);
-		gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
-		
-		this.shader.pMatrix = pMatrix;
-		this.shader.mvMatrix = mvMatrix;
-		nMatrix = mvMatrix.inverse();
-		nMatrix = nMatrix.transpose();
-		this.shader.nMatrix = nMatrix;
-		
-		this.shader.maxHeight = this.maxHeight;
-		
-		this.shader.drawSetup();
-		
-		//bind vertices
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-		gl.vertexAttribPointer(this.shader.program.vertexPositionAttribute, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-		
-		//bind normals
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-		gl.vertexAttribPointer(this.shader.program.vertexNormalAttribute, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-		
-		//bind texture coordinates
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
-		gl.vertexAttribPointer(this.shader.program.textureCoordAttribute, this.texCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+{	
+	gl.useProgram(this.shader.program);
 
-		//lightingAndNormals();
+	this.shader.cameraPosition = Vector.create([camera.X, camera.Y, camera.Z]);
+
+	//set textures
+	gl.activeTexture(gl.TEXTURE0);
+	gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
+			
+	gl.activeTexture(gl.TEXTURE1);
+	gl.bindTexture(gl.TEXTURE_2D, this.textures[1]);
 		
-		//bind indices and draw with them
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-		gl.drawElements(gl.TRIANGLE_STRIP, this.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-	}
+	gl.activeTexture(gl.TEXTURE2);
+	gl.bindTexture(gl.TEXTURE_2D, this.textures[2]);
+			
+	gl.activeTexture(gl.TEXTURE3);
+	gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
+	
+	this.shader.pMatrix = pMatrix;
+	this.shader.mvMatrix = mvMatrix;
+	nMatrix = mvMatrix.inverse();
+	nMatrix = nMatrix.transpose();
+	this.shader.nMatrix = nMatrix;
+	
+	this.shader.maxHeight = this.maxHeight;
+	
+	this.shader.drawSetup();
+	
+	//bind vertices
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+	gl.vertexAttribPointer(this.shader.program.vertexPositionAttribute, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+	
+	//bind normals
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
+	gl.vertexAttribPointer(this.shader.program.vertexNormalAttribute, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+	
+	//bind texture coordinates
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
+	gl.vertexAttribPointer(this.shader.program.textureCoordAttribute, this.texCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+	//lightingAndNormals();
+	
+	//bind indices and draw with them
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+	gl.drawElements(gl.TRIANGLE_STRIP, this.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+
 };
 
