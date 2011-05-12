@@ -11,9 +11,9 @@ function Player() {
 	this.side = 0;
 	this.yrot = 0;
 	this.prot = 0;
-	this.useController = false;
 	this.rotSpeed = 80;
 	this.Init();
+	this.justPressed = false;
 };
 
 Player.prototype.Init = function() {
@@ -34,7 +34,7 @@ Player.prototype.Draw = function() {
 };
 
 Player.prototype.CheckInput = function() {
-	if(this.useController) {
+	if(this.useController) //{
 		if(controller.StickX() < controller.LowerDZ()){
 			this.side = -1;
 		} else if(controller.StickX() > controller.UpperDZ()) {
@@ -61,7 +61,7 @@ Player.prototype.CheckInput = function() {
 			//this.Shoop();
 			console.log("Shoot");
 		}
-	} else {
+	// } else {
 		if(controller.KeyPressed(87)) { //W
 			this.forward = this.forward = 1;
 		} else if(controller.KeyPressed(83)) { //S
@@ -86,10 +86,10 @@ Player.prototype.CheckInput = function() {
 		} else if(controller.KeyPressed(40)) { //Down
 			this.prot = 1;
 		}
-	}
-	
-	if (controller.KeyPressed(84))
-		this.useController = !this.useController;
+		if(controller.KeyPressed(77)) {
+			this.Shoot();
+		}
+	//}
 };
 
 Player.prototype.MovePlayer = function(dTime) {
@@ -130,4 +130,25 @@ Player.prototype.Reset = function() {
 	this.side = 0;
 	this.yrot = 0;
 	this.prot = 0;
+};
+
+Player.prototype.Shoot = function() {
+	var tempPos = Vector.create([this.position.e(1), this.position.e(2), this.position.e(3)]);
+	// var destx = camera.xPos - (Math.sin(camera.yaw * piOver180) * this.speed);
+	// var destz = camera.zPos - (Math.cos(camera.yaw * piOver180) * this.speed);
+	// var desty = 25;
+	
+	// var tempDir = Vector.create([destx - tempPos[0], desty - tempPos[1], destz - tempPos[2]]);
+	// var mag = Math.sqrt(Math.pow(tempDir.e(1), 2) + Math.pow(tempDir.e(2), 2) + Math.pow(tempDir.e(3), 2));
+	// tempDir.elements[1] /= mag;
+	// tempDir.elements[2] /= mag;
+	// tempDir.elements[3] /= mag;
+	
+	var tempDir = Vector.create([Math.cos((camera.yaw - 90) * (Math.PI / 180)),
+								 0.0,
+								 Math.sin((camera.yaw - 90) * (Math.PI / 180))]);
+	
+	console.log(tempPos);
+	console.log(tempDir);
+	pList.Add(tempPos, tempDir);
 };
