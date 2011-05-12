@@ -23,8 +23,8 @@ AssetManager.prototype.CheckStatus = function(){
 		if(this.textures[i].isLoaded)	{ numLoaded++; }
 	for(var i = 0; i < this.images.length; i++)
 		if(this.images[i].isLoaded)	{ numLoaded++; }
-	for(var i = 0; i < this.images.length; i++)
-		if(this.images[i].isLoaded)  { numLoaded++; }
+	for(var i = 0; i < this.objects.length; i++)
+		if(this.objects[i].isLoaded)  { numLoaded++; }
 	var percent = (numLoaded / this.numAssets) * 100;
 	if(percent == 100) { this.isLoaded = true; }
 	return percent
