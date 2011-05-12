@@ -33,9 +33,10 @@ HUD.prototype.update = function(pHealth, eHealth) {
 };
 
 HUD.prototype.draw = function() {
+	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	this.ctx.fillStyle = "rgba(255, 0, 0, 1)";
-			this.ctx.font = 'bold 20px courier';
-			this.ctx.textBaseLine = 'top';
-			this.ctx.fillText("Health:" + this.pHealth, this.tX, this.tY);
+	this.ctx.font = 'bold 20px courier';
+	this.ctx.textBaseLine = 'top';
+	this.ctx.fillText("Health:" + boss.health, this.tX, this.tY);
 }
 
