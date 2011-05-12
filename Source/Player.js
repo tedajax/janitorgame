@@ -34,7 +34,6 @@ Player.prototype.Draw = function() {
 };
 
 Player.prototype.CheckInput = function() {
-	if(this.useController) //{
 		if(controller.StickX() < controller.LowerDZ()){
 			this.side = -1;
 		} else if(controller.StickX() > controller.UpperDZ()) {
@@ -53,7 +52,7 @@ Player.prototype.CheckInput = function() {
 		}
 		
 		if(controller.PadA()) {
-			//this.Jump();
+			this.Shoot
 			console.log("Jump");
 		}
 		
@@ -81,12 +80,12 @@ Player.prototype.CheckInput = function() {
 			this.yrot = -1;
 		}
 
-		if(controller.KeyPressed(38)) { //Up
-			this.prot = -1;
-		} else if(controller.KeyPressed(40)) { //Down
-			this.prot = 1;
-		}
-		if(controller.KeyPressed(77)) {
+		// if(controller.KeyPressed(38)) { //Up
+			// this.prot = -1;
+		// } else if(controller.KeyPressed(40)) { //Down
+			// this.prot = 1;
+		// }
+		if(controller.KeyPressed(38)) {
 			this.Shoot();
 		}
 	//}
