@@ -20,8 +20,8 @@ function Terrain()
 	//terrain.colorBuffer;
 	this.texCoordBuffer;
 	
-	this.width;
-	this.height;
+	this.terrwidth;
+	this.terrheight;
 	
 	this.loaded = false;	
 	heightImage.p = this;
@@ -30,7 +30,7 @@ function Terrain()
 		heightImage.p.terrainGenerate(heightImage);
 	};
 	
-	heightImage.src = "./Assets/Textures/mediumtest.png";
+	heightImage.src = "./Assets/Heightmaps/janitorterrain.png";
 	this.loadTextures(this.urls);
 	this.vertices;
 };
@@ -48,8 +48,8 @@ Terrain.prototype.getHeight = function(xPos, zPos)
 	if (xPos < 0 || zPos < 0)
 		return 0;
 	
-	var farX = this.width * this.scaleX;
-	var farZ = this.height * this.scaleZ;
+	var farX = this.terrwidth * this.scaleX;
+	var farZ = this.terrheight * this.scaleZ;
 	
 	if (xPos > farX ||
 	    zPos > farZ)
@@ -58,7 +58,7 @@ Terrain.prototype.getHeight = function(xPos, zPos)
 	var vertX = Math.floor(xPos / this.scaleX);
 	var vertZ = Math.floor(zPos / this.scaleZ);
 	
-	return this.vertices[((vertX * this.height + vertZ) * 3) + 1];
+	return this.vertices[((vertX * this.terrheight + vertZ) * 3) + 1];
 };
 
 Terrain.prototype.terrainGenerate = function(hmImage)
@@ -67,8 +67,8 @@ Terrain.prototype.terrainGenerate = function(hmImage)
 	var width = heightdata.width, height = heightdata.height;
 	this.heightData = heightdata;
 	
-	this.width = width;
-	this.height = height;
+	this.terrwidth = width;
+	this.terrheight = height;
 	
 	//generate vertices from heightmap and store in vertex buffer
 	this.vertexBuffer = gl.createBuffer();
