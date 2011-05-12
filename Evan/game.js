@@ -311,6 +311,7 @@ function tick()
 function gameStart()
 {
 	webGLStart();
+	enableServer();
 	
 	testTerrain = new terrain();
 	vData = new vegData();
