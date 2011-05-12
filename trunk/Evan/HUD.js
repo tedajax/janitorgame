@@ -1,234 +1,99 @@
-﻿/***************************************************************************************************
-//File:		HUD.js
-//Author:	Evan Pittfield
-//Date:		3-24-2011
-//Purpose:	This is where the HUD is made, and drawm, but it is instantiated and called in Launch.
-***************************************************************************************************/
 function HUD()
 {
-	//Get canvas from Launch.
-	this.canvas = document.getElementById("headsUpDisplay");
+	this.width;
+	this.height;
+	
+	this.healthBar;
+	this.health;
+	this.reticle;
+	this.map;
+	this.compass;
+	this.direction;
+	this.target;
+	
+	this.canvas;
+	this.context;
+	
+	this.loaded = false;
+	
+	this.getCanvas();
+	this.loadTextures();
+};
 
-	//CSS position attributes, this will allow to overlay canvas.
-	//originally had a problem where (0,0) was below 3d canvas, this
-	//solved it.
+HUD.prototype.checkLoaded = function()
+{
+	if (!this.healthBar.loaded) return;
+	if (!this.health.loaded) return;
+	if (!this.reticle.loaded) return;
+	if (!this.compass.loaded) return;
+	if (!this.direction.loaded) return;
+	
+	this.loaded = true;
+};
+
+HUD.prototype.getCanvas = function()
+{
+	this.canvas = document.getElementById("hudcanvas");
+	this.context = this.canvas.getContext('2d');
+	this.canvas.style.visibility = "visible";
 	this.canvas.style.position = "absolute";
-	this.canvas.style.top = "0px";
-	this.canvas.style.left = "0px";
-	
-	//Grab GL context, height, and width.
-	//The height and width will be same as 3d context height/width.
-	this.context = document.getElementById("headsUpDisplay").getContext("2d");		
-	this.height = document.getElementById("headsUpDisplay").height;				
-	this.width = document.getElementById("headsUpDisplay").width;		
-	
-	//Enemy.
-	this.image1 = new Image();
-	this.image1.src = "enemyVase.png"
-	
-	//Reticle.
-	this.image2 = new Image();
-	this.image2.src = "tehRedicle.png"
-	
-	//Character Healthbar
-	this.image3 = new Image();
-	this.image3.src = "tehhealthbar.png"
-	
-	//Compass
-	this.image4 = new Image();
-	this.image4.src = "tehcompass.png"
-	
-	//Level up indicator
-	this.image5 = new Image();
-	this.image5.src = "levelup.png"
-	
-	//Enemy Healthbar
-	this.image6 = new Image();
-	this.image6.src = "enemyHealth.png"
+	this.canvas.style.top = "5px";
+	this.canvas.style.left = "5px";
+	this.width = this.canvas.width;
+	this.height = this.canvas.height;
+};
 
+HUD.prototype.loadTextures = function()
+{
+	this.healthBar = loadTexture("healthbar.png");
+	this.health = loadTexture("health.png");
+	this.reticle = loadTexture("reticule.png");
+	this.compass = loadTexture("compass.png");
+	this.direction = loadTexture("direction.png");	
+};
+
+HUD.prototype.drawImage = function(img, x, y, rot)
+{
+	var scaleX = 1.0;
+	var scaleY = 1.0;
+	
+	if (img.scaleX)
+		scaleX = img.scaleX;
+	if (img.scaleY)
+		scaleY = img.scaleY;
+	
+	var sclWidth = (img.width * scaleX) / 2;
+	var sclHeight = (img.height * scaleY) / 2;
+	
+	var xpos = x + sclWidth;
+	var ypos = y + sclHeight;
+	
+	this.context.scale(scaleX, scaleY);
+	this.context.translate(xpos, ypos);
+	this.context.rotate(rot * Math.PI / 180.0);
+	this.context.drawImage(img, -sclWidth, -sclHeight);
+	this.context.rotate(-rot * Math.PI / 180.0);
+	this.context.translate(-xpos, -ypos);
+	this.context.scale(1.0 / scaleX, 1.0 / scaleY);
 };
 
 HUD.prototype.draw = function()
 {
-	/**************************
-		Enemy target
-	**************************/
-	//Push state on to stack.
-	this.context.save();
+	this.context.clearRect(0, 0, this.width, this.height);
 	
-	//Draw image, include font, and place image.
-	this.context.drawImage(this.image1, 30, 475);
-	this.context.font = 'bold 42px chiller';
-	this.context.fillStyle = "rgb(255, 0, 0)";
-	this.context.fillText("The Enemy Target", 10, 430);
-
-	//Pop the top state on the stack, and restore context to that state.
-	this.context.restore();
+	if (this.loaded)
+	{
+		this.drawImage(this.healthBar.image, 20, 20, 0);
+		this.health.image.scaleX = (engine.healthVal / 100.0);
+		this.drawImage(this.health.image, 20, 20, 0);
 		
-	/**************************
-		Reticle
-	**************************/
-	//Push state on to stack.
-	this.context.save();
-	
-	//Always draw at center, kind of a hack but i guess this is really how it works.
-	this.context.drawImage(this.image2, ((this.width - this.image2.width)/2) + 25, ((this.height - this.image2.height)/2) + 25);
-	
-	//Pop the top state on the stack, and restore context to that state.
-	this.context.restore();
-	
-	
-	/**************************
-		Character Health bar
-	**************************/
-	//Push state on to stack.
-	this.context.save();
-	
-	//Draw image, include font, place image.
-	this.context.drawImage(this.image3, 400, 730);
-	this.context.font = 'bold 42px chiller';
-	this.context.fillStyle = "rgb(0, 255, 0)";
-	this.context.fillText("Player Health", 430, 700);
-
-	//Clear when maxhealth is reached.
-	if(characterHealth >= 183)
-	{
-		this.context.clearRect(430, 740, 183, 6);
+		this.drawImage(this.reticle.image, (this.width / 2) - (this.reticle.image.width / 2), (this.height / 2) - (this.reticle.image.height / 2), 0);
+		
+		this.drawImage(this.compass.image, (this.width - 84), 20, 0);
+		this.drawImage(this.direction.image, (this.width - 84), 20, yaw);
 	}
-	
-	//Clear when minhealth is reached.
-	else if(characterHealth <= 0)
-	{
-		this.context.clearRect(430, 740, 0, 6);
-	}
-	
-	//Otherwise clear current health.
 	else
 	{
-		this.context.clearRect(430, 740, characterHealth+1, 6);
+		this.checkLoaded();
 	}
-
-	//Set maxhealth, draw maxhealth, and block drawing above it.
-	if(characterHealth >= 183)
-	{
-		characterHealth = 183;
-		this.context.fillRect(430, 740, 183, 6);
-	}
-	
-	//Set minhealth, draw minhealth, and block drawing behind it.
-	else if(characterHealth <= 0)
-	{
-		characterHealth = 0;
-		this.context.fillRect(430, 740, 0, 6);
-	}
-	
-	//Otherwise, draw current health.
-	else
-	{
-		this.context.fillRect(430, 740, characterHealth, 6);
-	}
-	
-	//Pop the top state on the stack, and restore context to that state.
-	this.context.restore();
-
-	
-	/**************************
-		Compass
-	**************************/
-	//Cheat and use black out box each draw because i do not know how to do Axis Aligned bounding Box AABB.
-	this.context.fillStyle = "rgb(89, 89, 89)";
-	this.context.fillRect(875, 25, this.image4.width, this.image4.height);
-	
-	//Push state on to stack.
-	this.context.save();
-	
-	//Translate to center of picture as origin.
-	this.context.translate((this.image4.width/2)+875, (this.image4.height/2)+25);
-
-	//Rotate by current yaw.
-	this.context.rotate(DegToRad(yaw));
-
-	//Translate back to top left
-	this.context.translate(-this.image4.width/2, -this.image4.height/2);
-	
-	//Draw image.
-	this.context.drawImage(this.image4, 0, 0);
-	
-	//Pop the top state on the stack, and restore context to that state.
-	this.context.restore();
-	
-	
-	/**************************
-		Level up indicator
-	**************************/
-
-	//Levelup
-	this.context.save();
-	this.context.drawImage(this.image5, 725, 650);
-	this.context.restore();
-	
-	
-	/**************************
-		Enemy Health bar
-	**************************/
-	//Push state on to stack.
-	this.context.save();
-	
-	//Draw image, include font, place image.
-	this.context.drawImage(this.image6, 15, 720);
-	this.context.font = 'bold 42px chiller';
-	this.context.fillStyle = "rgb(255, 0, 0)";
-	this.context.fillText("Enemy Health", 55, 700);
-	//this.context.fillRect(60, 740, 200, 6);
-
-
-	//Clear when maxhealth is reached.
-	if(enemyHealth >= 200)
-	{
-		this.context.clearRect(60, 740, 200, 6);
-	}
-	
-	//Clear when minhealth is reached.
-	else if(enemyHealth <= 0)
-	{
-		this.context.clearRect(60, 740, 0, 6);
-	}
-	
-	//Otherwise clear current health.
-	else
-	{
-		this.context.clearRect(60, 740, enemyHealth+1, 6);
-	}
-
-	//Set maxhealth, draw maxhealth, and block drawing above it.
-	if(enemyHealth >= 200)
-	{
-		enemyHealth = 200;
-		this.context.fillRect(60, 740, 200, 6);
-	}
-	
-	//Set minhealth, draw minhealth, and block drawing behind it.
-	else if(enemyHealth <= 0)
-	{
-		enemyHealth = 0
-		this.context.fillRect(60, 740, 0, 6);
-	}
-	
-	//Otherwise, draw current health.
-	else
-	{
-		this.context.fillRect(60, 740, enemyHealth, 6);
-	}
-	
-	//Pop the top state on the stack, and restore context to that state.
-	this.context.restore();
 };
-
-//Quick convert method.
-function DegToRad(d)
-{
-	return d*0.0174532925199432957;
-}	
-
-
- 

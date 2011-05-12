@@ -1,19 +1,12 @@
-Matrix.Scale = function(scale, size)
+function createInheritance(descendant, parent)
 {
-	if (size == 3 || size == 4)
-	{
-		var s = Matrix.I(size);
-
-		for (var i = 0; i < size - 1; i++)
-		{
-			s.elements[i][i] = scale;
-		}
-
-		return s;
-	}
-
-	throw "Invalid length for Scale";
-}
+    var sConstructor = parent.toString();
+    var aMatch = sConstructor.match( /\s*function (.*)\(/ );
+    if ( aMatch != null ) { descendant.prototype[aMatch[1]] = parent; }
+    for (var m in parent.prototype) {
+        descendant.prototype[m] = parent.prototype[m];
+    }
+};
 
 // augment Sylvester some
 Matrix.Translation = function (v)
@@ -34,7 +27,7 @@ Matrix.Translation = function (v)
   }
 
   throw "Invalid length for Translation";
-}
+};
 
 Matrix.prototype.flatten = function ()
 {
@@ -47,7 +40,7 @@ Matrix.prototype.flatten = function ()
         for (var i = 0; i < this.elements.length; i++)
             result.push(this.elements[i][j]);
     return result;
-}
+};
 
 Matrix.prototype.ensure4x4 = function()
 {
@@ -112,7 +105,7 @@ function mht(m) {
         return m.toString();
     }
     return s;
-}
+};
 
 //
 // gluLookAt
@@ -141,7 +134,24 @@ function makeLookAt(ex, ey, ez,
                 [0, 0, 1, -ez],
                 [0, 0, 0, 1]]);
     return m.x(t);
-}
+};
+
+//
+// glOrtho
+//
+function makeOrtho(left, right,
+                   bottom, top,
+                   znear, zfar)
+{
+    var tx = -(right+left)/(right-left);
+    var ty = -(top+bottom)/(top-bottom);
+    var tz = -(zfar+znear)/(zfar-znear);
+
+    return $M([[2/(right-left), 0, 0, tx],
+               [0, 2/(top-bottom), 0, ty],
+               [0, 0, -2/(zfar-znear), tz],
+               [0, 0, 0, 1]]);
+};
 
 //
 // gluPerspective
@@ -174,7 +184,7 @@ function makeFrustum(left, right,
                [0, Y, B, 0],
                [0, 0, C, D],
                [0, 0, -1, 0]]);
-}
+};
 
 //
 // glOrtho
@@ -186,7 +196,7 @@ function makeOrtho(left, right, bottom, top, znear, zfar)
     var tz = - (zfar + znear) / (zfar - znear);
 
     return $M([[2 / (right - left), 0, 0, tx],
-           [0, 2 / (top - bottom), 0, ty],
-           [0, 0, -2 / (zfar - znear), tz],
-           [0, 0, 0, 1]]);
-}
+               [0, 2 / (top - bottom), 0, ty],
+               [0, 0, -2 / (zfar - znear), tz],
+               [0, 0, 0, 1]]);
+};
