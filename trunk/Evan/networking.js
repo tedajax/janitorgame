@@ -69,8 +69,9 @@ function serverLoop()
 serverLoop.prototype.sendPlayerData = function(boss, player)
 {
 	//Send boss/player position, boss/player velocity, boss/player scale, boss/player rotation.
-	sendDataToSocket(	
-	
+	sendDataToSocket( { type: 'SendingPlayer',
+	 
+
 						data: { 
 								bossPosX:        boss.position.e(1),
 								bossPosY:        boss.position.e(2), 
@@ -93,7 +94,7 @@ serverLoop.prototype.sendPlayerData = function(boss, player)
 								bossRot:		 boss.rotation,
 								playerRot:		 player.rotation
 							  }
-					);
+					});
 								
 
 }
