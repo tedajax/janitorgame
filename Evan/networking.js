@@ -16,3 +16,13 @@ function enableServer()
 
 }
 
+
+function updateServer()
+{
+}
+
+function sendPlayerData
+{
+}
+
+
