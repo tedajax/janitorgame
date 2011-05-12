@@ -1,10 +1,11 @@
 //var engine = new Engine();
-var testTerrain;
+var terrain;
 var tempscale = 0.1;
 var controller;
 var testLevel;
 var camera;
 var player;
+var isLoaded;
 
 function initGL(canvas) {
 	try {
@@ -18,6 +19,7 @@ function initGL(canvas) {
 };
 
 function Init() {
+	isLoaded = false;
 	var canvas = document.getElementById("canvas");	
 	initGL(canvas);	
 	canvas.width = 800;
@@ -43,34 +45,43 @@ function Init() {
 	
 	document.onkeydown = controller.handleKeyDown;
 	document.onkeyup = controller.handleKeyUp;
-	testTerrain = new Terrain();
+	terrain = new Terrain();
 	
 	setInterval(tick, 16);
 };
 
 function drawScene() 
 { 
-	var cont=canvas.parentNode;
-	if ((canvas.width!=cont.clientWidth)||(canvas.height!=cont.clientHeight))
-	{
-		canvas.width=cont.clientWidth;
-		canvas.height=cont.clientHeight;
-	}
-	gl.viewport(0, 0, canvas.width, canvas.height);
-	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
- 
-	perspective(70, canvas.width / canvas.height, 0.1, 10000.0);
-	loadIdentity();
+	if(isLoaded) {  //Draw game
+		var cont=canvas.parentNode;
+		if ((canvas.width!=cont.clientWidth)||(canvas.height!=cont.clientHeight))
+		{
+			canvas.width=cont.clientWidth;
+			canvas.height=cont.clientHeight;
+		}
+		gl.viewport(0, 0, canvas.width, canvas.height);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	 
+		perspective(70, canvas.width / canvas.height, 0.1, 10000.0);
+		loadIdentity();
+		
+		camera.Transforms();	
+		terrain.draw();
+	} else { //Draw progress bar
 	
-	camera.Transforms();	
-	testTerrain.draw();
+	}
 };
 
 
 function update()
 {
-	console.log(engine.aManager.CheckStatus());
-	player.Update(engine.getDeltaTime());
+	if(!isLoaded) {
+		if(engine.aManager.isLoaded && terrain.isLoaded)
+			isLoaded = true;
+		console.log(engine.aManager.CheckStatus());
+	} else {
+		player.Update(engine.getDeltaTime());
+	}
 };
 
 function tick()
