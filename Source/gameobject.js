@@ -6,6 +6,7 @@ function GameObject()
 	this.scale = Vector.create([1.0, 1.0, 1.0]);;
 	
 	this.model;
+	this.texture;
 	
 	this.worldMatrix = Matrix.I(4);
 	

@@ -20,11 +20,29 @@ function AssetManager() {
 AssetManager.prototype.CheckStatus = function(){
 	var numLoaded = 0;
 	for(var i = 0; i < this.textures.length; i++)
-		if(this.textures[i].isLoaded)	{ numLoaded++; }
+	{
+		if(this.textures[i].isLoaded)	
+		{ 
+			numLoaded++; 
+			//console.log("texture " + i + " " + this.textures[i].isLoaded); 
+		}
+	}
 	for(var i = 0; i < this.images.length; i++)
-		if(this.images[i].isLoaded)	{ numLoaded++; }
+	{
+		if(this.images[i].isLoaded)	
+		{ 
+			numLoaded++; 
+			//console.log("image " + i + " " + this.images[i].isLoaded); 
+		}
+	}
 	for(var i = 0; i < this.objects.length; i++)
-		if(this.objects[i].isLoaded)  { numLoaded++; }
+	{
+		if(this.objects[i].loaded)  
+		{ 
+			numLoaded++; 
+			
+		} 
+	}
 	var percent = (numLoaded / this.numAssets) * 100;
 	if(percent == 100) { this.isLoaded = true; }
 	return percent
@@ -33,7 +51,7 @@ AssetManager.prototype.CheckStatus = function(){
 AssetManager.prototype.BulkLoad = function(assets){
 	for(var i = 0; i < assets.length; i++) {
 		if(assets[i].type == 1) {  //Image Loader
-			this.LoadImage(".Assets/Images/" + assets[i].url);
+			this.LoadImage("./Assets/Images/" + assets[i].url);
 		} else if(assets[i].type == 2) { //Texture Loader
 			this.LoadTexture("./Assets/Textures/" + assets[i].url);
 		} else if(assets[i].type == 3) { //Object Loader
@@ -346,30 +364,30 @@ function doLoadObj(obj, text)
 	}	
 	
     // set the VBOs
-    obj.normalObject = obj.ctx.createBuffer();
-    obj.ctx.bindBuffer(obj.ctx.ARRAY_BUFFER, obj.normalObject);
+    obj.normalBuffer = obj.ctx.createBuffer();
+    obj.ctx.bindBuffer(obj.ctx.ARRAY_BUFFER, obj.normalBuffer);
     obj.ctx.bufferData(obj.ctx.ARRAY_BUFFER, new Float32Array(normalArray), obj.ctx.STATIC_DRAW);
-	obj.normalObject.itemSize = 3;
-	obj.normalObject.numItems = normalArray.length / 3;
+	obj.normalBuffer.itemSize = 3;
+	obj.normalBuffer.numItems = normalArray.length / 3;
 	
-    obj.texCoordObject = obj.ctx.createBuffer();
-    obj.ctx.bindBuffer(obj.ctx.ARRAY_BUFFER, obj.texCoordObject);
+    obj.texCoordBuffer = obj.ctx.createBuffer();
+    obj.ctx.bindBuffer(obj.ctx.ARRAY_BUFFER, obj.texCoordBuffer);
     obj.ctx.bufferData(obj.ctx.ARRAY_BUFFER, new Float32Array(textureArray), obj.ctx.STATIC_DRAW);
-	obj.texCoordObject.itemSize = 2;
-	obj.texCoordObject.numItems = textureArray.length / 2;
+	obj.texCoordBuffer.itemSize = 2;
+	obj.texCoordBuffer.numItems = textureArray.length / 2;
 	
-    obj.vertexObject = obj.ctx.createBuffer();
-    obj.ctx.bindBuffer(obj.ctx.ARRAY_BUFFER, obj.vertexObject);
+    obj.vertexBuffer = obj.ctx.createBuffer();
+    obj.ctx.bindBuffer(obj.ctx.ARRAY_BUFFER, obj.vertexBuffer);
     obj.ctx.bufferData(obj.ctx.ARRAY_BUFFER, new Float32Array(vertexArray), obj.ctx.STATIC_DRAW);
-	obj.vertexObject.itemSize = 3;
-	obj.vertexObject.numItems = vertexArray.length / 3;
+	obj.vertexBuffer.itemSize = 3;
+	obj.vertexBuffer.numItems = vertexArray.length / 3;
 	
     obj.numIndices = indexArray.length;
-    obj.indexObject = obj.ctx.createBuffer();
-    obj.ctx.bindBuffer(obj.ctx.ELEMENT_ARRAY_BUFFER, obj.indexObject);
+    obj.indexBuffer = obj.ctx.createBuffer();
+    obj.ctx.bindBuffer(obj.ctx.ELEMENT_ARRAY_BUFFER, obj.indexBuffer);
     obj.ctx.bufferData(obj.ctx.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexArray), obj.ctx.STREAM_DRAW);
-	obj.indexObject.itemSize = 1;
-	obj.indexObject.numItems = indexArray.length;
+	obj.indexBuffer.itemSize = 1;
+	obj.indexBuffer.numItems = indexArray.length;
 	
     obj.groups = groups;
 
