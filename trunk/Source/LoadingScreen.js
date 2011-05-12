@@ -12,7 +12,7 @@ function LoadingScreen() {
 	this.total_height = 34;
 	this.initial_x = 20;
 	this.initial_y = 20;
-	this.radius = this.total_height/2;
+	this.radius = this.total_height / 2;
 	
 	this.ctx.font = "16px Verdana";
 	this.progress_lingrad = this.ctx.createLinearGradient(0,this.initial_y+this.total_height,0,0);
@@ -20,6 +20,8 @@ function LoadingScreen() {
 	this.progress_lingrad.addColorStop(0.4, '#ADD9FF');
 	this.progress_lingrad.addColorStop(1, '#9ED1FF');
     this.ctx.fillStyle = this.progress_lingrad;	
+	
+	//this.bgfill = 'rgba(131, 0, 131, 1)';
 };
 
 LoadingScreen.prototype.update = function(percent) {
@@ -29,7 +31,9 @@ LoadingScreen.prototype.update = function(percent) {
 			this.canvas.width=cont.clientWidth;
 			this.canvas.height=cont.clientHeight;
 		}
-		this.i = percent * 3 - 1;
+		this.initial_x = this.canvas.width * 0.5 - 150;
+		this.initial_y = this.canvas.height * 0.8;
+		this.i = percent * 3;
 		
 };
 
@@ -39,10 +43,9 @@ LoadingScreen.prototype.clearScreen = function() {
 
 LoadingScreen.prototype.draw = function() {
 // if(this.i <= 100){
-this.i+=1;
-		// this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		// this.ctx.fillRect(25,25,100,100);
-		
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+		this.ctx.fillText("Super Janitor vs. Green Poop Monster", this.canvas.width * 0.2, this.canvas.height * 0.2);
 		// Clear everything before drawing
 		this.ctx.clearRect(this.initial_x-5,this.initial_y-5,this.total_width+15,this.total_height+15);
 		this.progressLayerRect(this.ctx, this.initial_x, this.initial_y, this.total_width, this.total_height, this.radius);
@@ -50,62 +53,6 @@ this.i+=1;
 		this.progressText(this.ctx, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width );
 	// }
 };
-
-// x/*****************************************
-// *										 *
-// *			Loading Screen			 	 *
-// *										 *
-// ******************************************/
-
-// function LoadingScreen() {
-	// this.i = 0;
-	// this.res = 0;
-	// this.context = null;
-	// this.total_width = 300;
-	// this.total_height = 34;
-	// this.initial_x = 20;
-	// this.initial_y = 20;
-	// this.radius = this.total_height / 2;
-	// this.elem = document.getElementById('loadingCanvas');
-	// if(!this.elem || !this.elem.getContext) {
-		// return;
-	// }
-	// this.elem.style.visiability = "visible";
-	// this.elem.style.position = "absolute";
-	// this.elem.style.top = '0px';
-	// this.elem.style.left = '0px';
-	
-	// this.context = this.elem.getContext('2d');
-	// if(this.context) {
-		// return;
-	// }
-	
-	// //Set font
-	// this.context.font = "16px Verdana";
-	
-	// this.progress_lingrad = this.context.createLinearGradient(
-							// 0,this.initial_y+this.total_height,0,0);
-	// this.progress_lingrad.addColorStop(0, '#4DA4F3');
-	// this.progress_lingrad.addColorStop(0.4, '#ADD9FF');
-	// this.progress_lingrad.addColorStop(1, '#9ED1FF');
-	// this.context.fillStyle = this.progress_lingrad;
-	
-	// this.elem.style.zIndex = '10';
-// };
-
-// LoadingScreen.prototype.update = function(i) {
-	// this.i = i;
-// };
-
-// LoadingScreen.prototype.draw = function() {
-	// // Clear everything before drawing
-	// this.context.clearrect(this.initial_x-5,this.initial_y-5,this.total_width+15,this.total_height+15);
-	// this.progresslayerrect(this.context, this.initial_x, this.initial_y, this.total_width, this.total_height, this.radius);
-	// this.progressbarrect(this.context, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width);
-	// this.progresstext(this.context, this.initial_x, this.initial_y, this.i, this.total_height, this.radius, this.total_width );
-
-	
-// };
 
 /**
  * Draws a rounded rectangle.

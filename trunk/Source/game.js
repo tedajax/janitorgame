@@ -26,7 +26,6 @@ function Init() {
 	isLoaded = false;
 	var canvas = document.getElementById("canvas");	
 	initGL(canvas);	
-//	canvas.style.zIndex = '0';
 	canvas.width = 800;
 	canvas.height = 600;
 	engine.init();
