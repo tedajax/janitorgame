@@ -7,6 +7,7 @@ Engine.prototype.init = function()
 {
 	this.aManager = new AssetManager();
 	this.lastTime = new Date().getTime();
+	this.sManager = new SoundManager();
 };
 
 Engine.prototype.getDeltaTime = function() {
