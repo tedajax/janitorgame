@@ -6,7 +6,10 @@ function Boss()
 	
 	Boss.IDLE_STATE = 0;
 	Boss.FOLLOW_STATE = 1;
-	Boss.JUMP_STATE = 2;
+	Boss.JUMP_BACK_STATE = 2;
+	Boss.JUMP_STATE = 3;
+	Boss.JUMP_HOVER_STATE = 4;
+	Boss.JUMP_SLAM_STATE = 5;
 	
 	this.state = 1;
 	this.percept = new Percept();
@@ -71,6 +74,11 @@ Boss.prototype.update = function(newPerc)
 	
 	this.state = GetBossState(this.percept);
 		
+	if (this.position.e(1) < 68) this.position.elements[0] = 68;
+	if (this.position.e(1) > 184) this.position.elements[0] = 184;
+	if (this.position.e(3) < 68) this.position.elements[2] = 68;
+	if (this.position.e(3) > 184) this.position.elements[2] = 184;
+		
 	switch (this.state)
 	{
 		default:
@@ -79,6 +87,7 @@ Boss.prototype.update = function(newPerc)
 			break;
 			
 		case Boss.FOLLOW_STATE:
+			this.jumpHeight = 0.0;
 			this.velocity = this.percept.target.position.subtract(this.position);
 			this.velocity.toUnitVector();
 			
@@ -93,13 +102,45 @@ Boss.prototype.update = function(newPerc)
 			//this.rotation += 1.0;
 			
 			break;
-		case Boss.JUMP_STATE:
+		case Boss.JUMP_BACK_STATE:
+
+			var tempVY = this.velocity.e(2);
+			this.velocity = this.percept.target.position.subtract(this.position);
+			this.velocity.toUnitVector();
+			
+			this.velocity = this.velocity.x(-0.02);			
+			this.position = this.position.add(this.velocity);
+			
+			this.rotation = Math.atan2(this.percept.target.position.e(1) - this.position.e(1),
+									   this.percept.target.position.e(3) - this.position.e(3));
+			this.rotation *= (180 / Math.PI);
+			this.rotation += 270;
+			this.velocity.elements[1] = tempVY;
+		
 			if (this.position.elements[1] <= thght + 0.1 && this.velocity.elements[1] >= 0.0)
 				this.velocity.elements[1] = 3.0;
 				
 			this.jumpHeight += this.velocity.elements[1];
 				
 			this.velocity.elements[1] -= 0.1;
+			break;
+			
+		case Boss.JUMP_STATE:
+			if (this.position.elements[1] <= thght + 0.1 && this.velocity.elements[1] >= 0.0)
+				this.velocity.elements[1] = 5.0;
+				
+			this.jumpHeight += this.velocity.elements[1];
+				
+			this.velocity.elements[1] -= 0.1;		
+			this.percept.timer = 200;
+			break;
+			
+		case Boss.JUMP_HOVER_STATE:
+			this.percept.timer -= 1;
+			break;
+			
+		case Boss.JUMP_SLAM_STATE:
+			this.jumpHeight -= 2.0;
 			break;
 	}	
 	

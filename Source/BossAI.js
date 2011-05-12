@@ -6,30 +6,52 @@ function GetBossState(percept)
 	{
 		default:
 		case Boss.IDLE_STATE:
-			break;
+		break;
 			
 		case Boss.FOLLOW_STATE:
 			//console.log(percept.actor.position.distanceFrom(percept.target.position));
-			if (percept.actor.position.distanceFrom(percept.target.position) < 40)
-				state = Boss.JUMP_STATE;
-			break;
+			if (percept.actor.position.distanceFrom(percept.target.position) < 50)
+			{
+				if (Math.floor(Math.random() * 2) == 0)
+					state = Boss.JUMP_BACK_STATE;
+				else
+					state = Boss.JUMP_STATE;
+			}
+		break;
 			
+		case Boss.JUMP_BACK_STATE:
+			//console.log(percept.actor.position.e(2));
+			if (targetDist(percept) > 75)
+				if (percept.actor.position.e(2) <= percept.thght + 2.0)
+					state = Boss.FOLLOW_STATE;
+		break;
+		
 		case Boss.JUMP_STATE:
-			if (percept.actor.velocity.e(2) < 0.0 && percept.actor.position.e(1) <= percept.thght + 0.1)
+			if (percept.actor.position.e(2) >= 1000 + percept.thght)
+				state = Boss.JUMP_HOVER_STATE;
+		break;
+		
+		case Boss.JUMP_HOVER_STATE:
+			if (percept.timer <= 0)
+				state = Boss.JUMP_SLAM_STATE;
+		break;
+		
+		case Boss.JUMP_SLAM_STATE:
+			if (percept.actor.position.e(2) <= percept.thght)
 				state = Boss.FOLLOW_STATE;
-			break;
+		break;
 	}
 	
 	return state;
 };
 
-GetBossState.prototype.sqr = function(value)
+sqr = function(value)
 {
 	return value * value;
 };
 
-GetBossState.prototype.targetDist = function(percept)
+targetDist = function(percept)
 {
 	return Math.sqrt(sqr(percept.actor.position.e(1) - percept.target.position.e(1)) +
-					 sqr(percept.actor.position.e(3) - percept.target.positoin.e(3)));
+					 sqr(percept.actor.position.e(3) - percept.target.position.e(3)));
 };
