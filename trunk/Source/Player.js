@@ -12,7 +12,7 @@ function Player() {
 	this.yrot = 0;
 	this.prot = 0;
 	this.useController = false;
-	this.rotSpeed = 4;
+	this.rotSpeed = 80;
 	this.Init();
 };
 
@@ -76,15 +76,15 @@ Player.prototype.CheckInput = function() {
 
 
 		if(controller.KeyPressed(39)) { //Right
-			this.yrot = this.rotSpeed;;
+			this.yrot = 1;
 		} else if(controller.KeyPressed(37)) { //Left
-			this.yrot = -this.rotSpeed;
+			this.yrot = -1;
 		}
 
 		if(controller.KeyPressed(38)) { //Up
-			this.prot = -this.rotSpeed;
+			this.prot = -1;
 		} else if(controller.KeyPressed(40)) { //Down
-			this.prot = this.rotSpeed;
+			this.prot = 1;
 		}
 	}
 	
@@ -109,10 +109,10 @@ Player.prototype.MovePlayer = function(dTime) {
 		z += Math.sin(this.yaw * piOver180) * this.side * this.speed * dTime;
 	}
 	if(this.yrot != 0) {
-		this.yaw += this.yrot * this.speed * dTime;
+		this.yaw += this.yrot * this.rotSpeed * dTime;
 	}
 	if(this.prot != 0) {
-		this.pitch += this.prot * this.speed * dTime;
+		this.pitch += this.prot * this.rotSpeed * dTime;
 	}
 	
 	y = terrain.getHeight(x,z) + 10;
