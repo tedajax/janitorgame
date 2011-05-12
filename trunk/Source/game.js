@@ -10,6 +10,7 @@ var isLoaded;
 var loadingScreen;
 var boss;
 var perc;
+var hud;
 
 var ptest;
 
@@ -68,6 +69,7 @@ function Init() {
 	document.onkeyup = controller.handleKeyUp;
 	terrain = new Terrain();
 	loadingScreen = new LoadingScreen();
+	hud = new HUD();
 	setInterval(tick, 16);
 };
 
@@ -85,7 +87,7 @@ function update()
 	else 
 	{
 		player.Update(engine.getDeltaTime());
-		
+		hud.update();
 		//console.log(player.position.elements[1]);
 		
 		perc.target.position = player.position;
@@ -118,6 +120,7 @@ function drawScene()
 		gl.disable(gl.BLEND);
 		terrain.draw();
 		boss.draw();
+		hud.draw();
 		
 		gl.enable(gl.BLEND);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
