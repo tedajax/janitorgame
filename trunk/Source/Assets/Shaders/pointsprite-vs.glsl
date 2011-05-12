@@ -1,23 +1,20 @@
-uniform float uTime;
+attribute vec3 aVertexPosition;
+attribute vec2 aTextureCoord;
 
-attribute float aLifetime;
-attribute vec3 aStartPosition;
-attribute vec3 aEndPosition;
+uniform mat4 uMVMatrix;
+uniform mat4 uPMatrix;
 
-varying float vLifetime;
+uniform vec3 uCameraPos;
+uniform vec4 uColor;
+
+varying vec2 vTextureCoord;
+varying vec3 vVertexPosition;
+varying vec4 vColor;
 
 void main(void)
 {
-	if (uTime <= aLifeTime)
-	{
-		gl_Position.xyz = aStartPosition + (uTime * aEndPosition);
-		//gl_Position.xyz += uCenterPosition;
-		gl_Position.w = 1.0;
-	}
-	else
-		gl_Position = vec4(-1000, -1000, 0, 0);
-		
-	vLifetime = 1.0 - (uTime / aLifetime);
-	vLifetime = clamp(vLifetime, 0.0, 1.0);
-	gl_PointSize = (vLifetime * vLifetime) * 40.0;
-};
+	vTextureCoord = aTextureCoord;
+	vVertexPosition = aVertexPosition;
+	vColor = uColor;
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+}

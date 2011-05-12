@@ -9,8 +9,6 @@ function ParticleShader()
 	
 	this.texture = 0;
 	
-	this.time = 0;
-	
 	this.color = Vector.create([1.0, 1.0, 1.0, 1.0]);
 	
 	this.initLocales();
@@ -28,29 +26,25 @@ ParticleShader.prototype.vertFileString = function()
 
 ParticleShader.prototype.initLocales = function()
 {
-	this.program.lifetimeAttribute = gl.getAttribLocation(this.program, "aLifetime");
-	gl.enableVertexAttribArray(this.program.lifetimeAttribute);
+	this.program.vertexPositionAttribute = gl.getAttribLocation(this.program, "aVertexPosition");
+	gl.enableVertexAttribArray(this.program.vertexPositionAttribute);
 	
-	this.program.startPositionAttribute = gl.getAttribLocation(this.program, "aStartPosition");
-	gl.enableVertexAttribArray(this.program.startPositionAttribute);
+	this.program.textureCoordAttribute = gl.getAttribLocation(this.program, "aTextureCoord");
+	gl.enableVertexAttribArray(this.program.textureCoordAttribute);
 	
-	this.program.endPositionAttribute = gl.getAttribLocation(this.program, "aEndPosition");
-	gl.enableVertexAttribArray(this.program.endPositionAttribute);
-	
-	//TODO: add pMatrix and mvMatrix
+	this.program.pMatrixUniform = gl.getUniformLocation(this.program, "uPMatrix");
+	this.program.mvMatrixUniform = gl.getUniformLocation(this.program, "uMVMatrix");
 	
 	this.program.samplerUniform = gl.getUniformLocation(this.program, "uTexSampler");
-	
-	this.program.timeUniform = gl.getUniformLocation(this.program, "uTime");
-	
 	this.program.colorUniform = gl.getUniformLocation(this.program, "uColor");
 };
 
 ParticleShader.prototype.drawSetup = function()
 {
-	//TODO: pMatrix/mvMatrix stuff
+	gl.uniformMatrix4fv(this.program.pMatrixUniform, false, new Float32Array(this.pMatrix.flatten()));
+	gl.uniformMatrix4fv(this.program.mvMatrixUniform, false, new Float32Array(this.mvMatrix.flatten()));
 	
-	gl.uniform1i(this.program.samplerUniform, this.texture);
-	gl.uniform1f(this.program.timeUniform, this.time);
+	gl.uniform1i(this.program.samplerUniform, 0);
+	
 	gl.uniform4f(this.program.colorUniform, this.color);
 };
