@@ -8,6 +8,7 @@ var camera;
 var player;
 var isLoaded;
 var boss;
+var perc;
 
 function initGL(canvas) {
 	try {
@@ -45,6 +46,7 @@ function Init() {
 	player = new Player();
 	
 	boss = new Boss();
+	perc = new Percept();
 	
 	gl.enable(gl.DEPTH_TEST);
 	gl.depthFunc(gl.LEQUAL);
@@ -60,7 +62,8 @@ function Init() {
 
 function drawScene() 
 { 
-	if(isLoaded) {  //Draw game
+	if(isLoaded) //Draw game
+	{  
 		var cont=canvas.parentNode;
 		if ((canvas.width!=cont.clientWidth)||(canvas.height!=cont.clientHeight))
 		{
@@ -76,7 +79,9 @@ function drawScene()
 		camera.Transforms();	
 		terrain.draw();
 		boss.draw();
-	} else { //Draw progress bar
+	} 
+	else 
+	{ //Draw progress bar
 	
 	}
 	
@@ -85,12 +90,20 @@ function drawScene()
 
 function update()
 {
-	if(!isLoaded) {
+	if(!isLoaded) 
+	{
 		if(engine.aManager.isLoaded && terrain.isLoaded)
 			isLoaded = true;
 		console.log(engine.aManager.CheckStatus());
-	} else {
+	} 
+	else 
+	{
 		player.Update(engine.getDeltaTime());
+		
+		perc.target.position = player.position;
+		perc.target.rotation = player.rotation;
+			
+		boss.update(perc);
 	}
 };
 

@@ -7,10 +7,12 @@ function Boss()
 	Boss.IDLE_STATE = 0;
 	Boss.FOLLOW_STATE = 1;
 	
-	this.state = 0;
+	this.state = 1;
 	this.percept = new Percept();
 	
 	this.shader;
+	
+	this.jumpHeight = 0;
 	
 	this.initialize();
 };
@@ -22,7 +24,9 @@ Boss.prototype.initialize = function()
 	
 	this.shader = new ObjectShader();
 	
-	this.scale = Vector.create([100.0, 100.0, 100.0]);
+	this.position = Vector.create([100, 0.0, 100]);
+	
+	this.scale = Vector.create([60.0, 40.0, 60.0]);
 };
 
 Boss.prototype.loadModel = function()
@@ -40,7 +44,7 @@ Boss.prototype.updateShader = function()
 	this.shader.pMatrix = pMatrix;
 	this.shader.mvMatrix = mvMatrix;
 	
-	this.shader.cameraPosition = Vector.create([camera.X, camera.Y, camera.Z]);
+	this.shader.pos = this.position;
 	
 	this.shader.drawSetup();
 };
@@ -52,6 +56,9 @@ Boss.prototype.update = function(newPerc)
 	this.percept.actor.state = this.state;
 	this.percept.target.position = newPerc.target.position;
 	this.percept.target.rotation = newPerc.target.rotation;
+	
+	this.position.elements[1] = terrain.getHeight(this.position.e(1), this.position.e(3));
+	//this.position.elements[1] += this.jumpHeight;
 
 	switch (this.state)
 	{
@@ -60,6 +67,10 @@ Boss.prototype.update = function(newPerc)
 			break;
 			
 		case Boss.FOLLOW_STATE:
+			this.velocity = this.percept.target.position.subtract(this.position);
+			this.velocity.toUnitVector();
+			this.velocity = this.velocity.x(0.01);			
+			this.position = this.position.add(this.velocity);
 			break;
 	}	
 };
@@ -71,7 +82,7 @@ Boss.prototype.draw = function()
 	mvTranslate([this.position.e(1), this.position.e(2), this.position.e(3)]);
 	mvRotate(this.rotation, [0, 1, 0]);
 	mvScale([this.scale.e(1), this.scale.e(2), this.scale.e(3)]);
-	
+
 	this.updateShader();
 	
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.model.vertexBuffer);
