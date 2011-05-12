@@ -11,7 +11,7 @@ var loadingScreen;
 var boss;
 var perc;
 var hud;
-
+var pList;
 var ptest;
 
 function initGL(canvas) {
@@ -49,7 +49,7 @@ function Init() {
 	
 	controller = new Controller();
 	player = new Player();
-	
+	pList = new ProjectileList();
 	boss = new Boss();
 	perc = new Percept();
 	
@@ -92,6 +92,7 @@ function update()
 		
 		perc.target.position = player.position;
 		perc.target.rotation = player.rotation;
+		pList.Update(1);
 			
 		boss.update(perc);
 		
@@ -125,6 +126,7 @@ function drawScene()
 		gl.enable(gl.BLEND);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 		ptest.draw();
+		pList.Draw();
 	} 
 	else 
 	{ //Draw progress bar
