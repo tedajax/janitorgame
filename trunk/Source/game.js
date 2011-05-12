@@ -7,6 +7,7 @@ var testLevel;
 var camera;
 var player;
 var isLoaded;
+var loadingScreen;
 var boss;
 var perc;
 
@@ -25,6 +26,7 @@ function Init() {
 	isLoaded = false;
 	var canvas = document.getElementById("canvas");	
 	initGL(canvas);	
+//	canvas.style.zIndex = '0';
 	canvas.width = 800;
 	canvas.height = 600;
 	engine.init();
@@ -56,8 +58,30 @@ function Init() {
 	document.onkeydown = controller.handleKeyDown;
 	document.onkeyup = controller.handleKeyUp;
 	terrain = new Terrain();
-	
+	loadingScreen = new LoadingScreen();
 	setInterval(tick, 16);
+};
+
+function update()
+{
+	if(!isLoaded) 
+	{
+		if(engine.aManager.isLoaded && terrain.isLoaded) {
+			isLoaded = true;
+			loadingScreen.clearScreen();
+		}
+		console.log(engine.aManager.CheckStatus());
+		loadingScreen.update(engine.aManager.CheckStatus());
+	} 
+	else 
+	{
+		player.Update(engine.getDeltaTime());
+		
+		perc.target.position = player.position;
+		perc.target.rotation = player.rotation;
+			
+		boss.update(perc);
+	}
 };
 
 function drawScene() 
@@ -82,29 +106,9 @@ function drawScene()
 	} 
 	else 
 	{ //Draw progress bar
-	
+		loadingScreen.draw();
 	}
 	
-};
-
-
-function update()
-{
-	if(!isLoaded) 
-	{
-		if(engine.aManager.isLoaded && terrain.isLoaded)
-			isLoaded = true;
-		console.log(engine.aManager.CheckStatus());
-	} 
-	else 
-	{
-		player.Update(engine.getDeltaTime());
-		
-		perc.target.position = player.position;
-		perc.target.rotation = player.rotation;
-			
-		boss.update(perc);
-	}
 };
 
 function tick()
