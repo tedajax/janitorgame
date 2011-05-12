@@ -5,6 +5,7 @@ uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
 
 uniform vec3 uCameraPos;
+uniform vec3 uObjPos;
   
 uniform float uFogMaxDist;
 uniform float uFogMinDist;
@@ -19,7 +20,7 @@ varying float vFogWeight;
 void main(void)
 {
 
-	float d = distance(aVertexPosition, uCameraPos);
+	float d = distance(aVertexPosition + uObjPos, uCameraPos);
 	
 	if (uFogEnabled)
 	{

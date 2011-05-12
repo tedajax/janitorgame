@@ -240,11 +240,11 @@ function doLoadObj(obj, text)
         }
         else if (array[0] == "f") {
             // face
-            if (array.length != 4) {
+            //if (array.length != 4) {
                 
-                continue;
-            }
-
+            //    continue;
+           // }
+			
             for (var i = 1; i < 4; ++i) {
                 if (!(array[i] in facemap)) {
                     // add a new entry to the map and arrays

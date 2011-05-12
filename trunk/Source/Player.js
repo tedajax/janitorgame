@@ -97,6 +97,9 @@ Player.prototype.MovePlayer = function(dTime) {
 	var x = this.position.e(1);
 	var y = this.position.e(2);
 	var z = this.position.e(3);
+	
+	//console.log(x + " " + y + " " + z);
+	
 	if(this.forward != 0) {
 		x += Math.cos((this.yaw - 90) * piOver180) * this.forward * this.speed * dTime;
 		z += Math.sin((this.yaw - 90) * piOver180) * this.forward * this.speed * dTime;
@@ -114,6 +117,12 @@ Player.prototype.MovePlayer = function(dTime) {
 	}
 	
 	y = terrain.getHeight(x,z) + 10;
+	
+	if (x < 68) x = 68;
+	if (z < 68) z = 68;
+	if (x > 184) x = 184;
+	if (z > 184) z = 184;
+	
 	this.position = Vector.create([x,y,z]);
 };
 
