@@ -12,7 +12,6 @@ var boss;
 var perc;
 var hud;
 var pList;
-var ptest;
 
 function initGL(canvas) {
 	try {
@@ -95,8 +94,6 @@ function update()
 		pList.Update(1);
 			
 		boss.update(perc);
-		
-		ptest.update();
 	}
 };
 
@@ -125,7 +122,6 @@ function drawScene()
 		
 		gl.enable(gl.BLEND);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-		ptest.draw();
 		pList.Draw();
 	} 
 	else 

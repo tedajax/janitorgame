@@ -3,6 +3,14 @@ engine.createInheritance(Boss, GameObject);
 function Boss()
 {
 	this.GameObject();
+	this.sounds = new Array();
+	
+	this.s1 = document.createElement('audio');
+	this.s1.setAttribute('src', './Assets/Sounds/free.wav');
+	this.s1.hasPlayed = false;
+	this.s2 = document.createElement('audio');
+	this.s2.setAttribute('src', './Assets/Sounds/badass.wav');
+	this.s2.played = false;
 	
 	Boss.IDLE_STATE = 0;
 	Boss.FOLLOW_STATE = 1;
@@ -14,12 +22,14 @@ function Boss()
 	
 	this.state = 1;
 	this.percept = new Percept();
-	
+
+	this.firstSound = false;
+	this.secondSound = false;
 	this.shader;
 	
 	this.jumpHeight = 0;
 	this.collisionRadius = 20;
-	this.health = 100000;
+	this.health = 25000;
 	this.initialize();
 };
 
@@ -74,6 +84,22 @@ Boss.prototype.update = function(newPerc)
 	this.position.elements[1] = thght;
 	this.position.elements[1] += this.jumpHeight;
 	
+	if(this.health < 25000 && !this.firstSound) {
+		this.s2.play();
+		this.firstSound = true;
+	}
+	
+	if(this.health < 15000 && !this.secondSound) {
+		this.s2.play();
+		this.secondSound = true;
+	}
+	
+	if(this.health > 5000) {
+	this.scale.elements[0] = (60 * (this.health / 25000));
+	this.scale.elements[1] = (40 * (this.health / 25000));
+	this.scale.elements[2] = (60 * (this.health / 25000));	
+	this.collisionRadius = (20 * (this.health / 25000));
+	}
 	this.state = GetBossState(this.percept);
 		
 	if (this.position.e(1) < 68) this.position.elements[0] = 68;
